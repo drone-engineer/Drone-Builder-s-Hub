@@ -266,58 +266,62 @@ def extract_search_keyword(raw_text: str) -> str:
 
     return " ".join(keywords)
 
-def search_drone_tech(query: str):
-    if not tavily_client:
-        raise RuntimeError("TAVILY_API_KEY가 설정되지 않았습니다.")
+def search_drone_tech(query: str, max_results: int = 4):
+    """
+    드론 기술 검색: SW/제어/설정 질의 시 ArduPilot 및 PX4 공식 문서를 최우선 탐색
+    """
+    if not TAVILY_API_KEY:
+        return []
 
-    refined_query = extract_search_keyword(query)
+    q_lower = query.lower()
 
-    # 1. FC, 배터리, 모터, 센서, 오픈소스 포럼을 아우르는 대표 도메인 풀
-    trusted_domains = [
-        # 모터 / ESC
-        "hobbywing.com", "tmotor.com", "uav-en.tmotor.com", "kdedirect.com",
-        # 비행제어기(FC) / 하드웨어 모듈
-        "holybro.com", "cuav.net", "mateksys.com",
-        # 오픈소스 커뮤니티 및 펌웨어 위키
-        "docs.px4.io", "ardupilot.org", "discuss.ardupilot.org", "discuss.px4.io",
-        # 드론 배터리 및 전원 하드웨어
-        "gensace.com", "grepow.com", "dronenodes.com"
-    ]
+    # 하드웨어 물리 부품 키워드
+    hw_keywords = ["모터", "motor", "추력", "thrust", "배터리", "battery", "프롭", "prop", "esc", "변속기", "가격", "구매"]
+    # 오토파일럿 SW / 설정 / 캘리브레이션 키워드
+    sw_keywords = ["설정", "파라미터", "param", "캘리", "calib", "센서", "ekf", "loiter", "px4", "ardupilot", "아듀파일럿", "픽스호크", "pixhawk", "페일세이프", "failsafe", "시동", "arm", "qgc", "mission planner", "미션플래너", "비행모드"]
 
-    # 2. 1차 시도: 대표 기술 도메인 우선 검색 (광고/쇼핑몰 노이즈 배제)
-    response = None
+    is_sw_query = any(k in q_lower for k in sw_keywords) and not any(k in q_lower for k in hw_keywords)
+
+    headers = {"Content-Type": "application/json"}
+    url = "https://api.tavily.com/search"
+
+    if is_sw_query:
+        # ArduPilot & PX4 공식 문서 강제 타깃팅
+        payload = {
+            "api_key": TAVILY_API_KEY,
+            "query": f"{query} site:ardupilot.org OR site:docs.px4.io",
+            "search_depth": "advanced",
+            "include_domains": ["ardupilot.org", "docs.px4.io"],
+            "max_results": max_results
+        }
+    else:
+        # 일반 부품 및 기술 도메인 풀
+        payload = {
+            "api_key": TAVILY_API_KEY,
+            "query": query,
+            "search_depth": "advanced",
+            "include_domains": [
+                "ardupilot.org", "docs.px4.io", "tmotor.com", "hobbywing.com", 
+                "holybro.com", "cuav.net", "kdedirect.com"
+            ],
+            "max_results": max_results
+        }
+
     try:
-        res = tavily_client.search(
-            query=refined_query,
-            search_depth="advanced",
-            include_domains=trusted_domains,
-            max_results=4
-        )
-        if res.get("results"):
-            response = res
-    except Exception:
-        pass
-
-    # 3. 2차 Fallback: 카메라, 특수 센서, 신규 제조사 등 도메인 풀 밖의 질의는 전역 웹 심층 검색
-    if not response or not response.get("results"):
-        try:
-            response = tavily_client.search(
-                query=f"drone {refined_query} specifications datasheet",
-                search_depth="advanced",
-                max_results=4
-            )
-        except Exception:
-            response = {"results": []}
-
-    clean = []
-    for item in response.get("results", []):
-        link = (item.get("url") or "").strip()
-        title = (item.get("title") or "").strip()
-        snippet = (item.get("content") or "").strip()
-        if not link or not snippet:
-            continue
-        clean.append({"title": title[:200], "snippet": snippet[:800], "link": link})
-    return clean
+        res = requests.post(url, headers=headers, json=payload, timeout=8)
+        if res.status_code == 200:
+            results = res.json().get("results", [])
+            clean_results = []
+            for r in results:
+                clean_results.append({
+                    "title": r.get("title", ""),
+                    "snippet": r.get("content", ""),
+                    "link": r.get("url", "")
+                })
+            return clean_results
+    except Exception as e:
+        print(f"Tavily 검색 오류: {e}")
+    return []
 
 def format_section_to_markdown(data):
     if isinstance(data, str):
