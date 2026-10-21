@@ -1,0 +1,4 @@
+# T-MOTOR 605-X Integrated Propulsion System (MN605-S Motor + Alpha 60A ESC Combo), 170KV/320KV 공식 테스트 데이터시트
+
+- 출처 URL: https://shop.tmotor.com/products/605-x-standard-integrated-propulsion
+
