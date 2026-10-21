@@ -1,0 +1,16 @@
+streamlit
+openai
+tavily-python
+langgraph
+requests
+python-dotenv
+faiss-cpu
+langchain
+langchain-core
+langchain-community
+langchain-openai
+langchain-text-splitters
+pypdf
+pandas
+openpyxl
+beautifulsoup4
