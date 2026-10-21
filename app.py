@@ -669,7 +669,7 @@ with st.sidebar:
         elif thrust_per_motor_max < 4.0:
             rec_class = "💡 중소형 기체 (13~18인치 / 6S LiPo / 4014~5010급)"
         elif thrust_per_motor_max < 9.0:
-            rec_class = "💡 중대형 산업용 (21~24인치 / 12S LiPo / Hobbywing X6급, 6215~8120급)"
+            rec_class = "💡 중대형 산업용 (21-24인치 / 12S LiPo / Hobbywing X6급, 6215-8120급)"
         elif thrust_per_motor_max < 16.0:
             rec_class = "💡 대형 헤비리프팅 (28~34인치 / 12S~14S / Hobbywing X8, T-Motor P80급)"
         else:
