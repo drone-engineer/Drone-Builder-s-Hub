@@ -987,23 +987,23 @@ for idx, c in enumerate(st.session_state["chat_history"]):
         else:
             st.markdown(c["content"])
 
-        if c.get("files"):
-            st.markdown("##### 📥 인용된 원본 매뉴얼 다운로드")
-            cols = st.columns(len(c["files"]))
-            for col_idx, f_info in enumerate(c["files"]):
-                with cols[col_idx]:
-                    try:
-                        with open(f_info["path"], "rb") as f_data:
-                            st.download_button(
-                                label=f"📄 {f_info['name'][:22]}...",
-                                data=f_data.read(),
-                                file_name=f_info["name"],
-                                mime="application/pdf",
-                                key=f"down_{idx}_{col_idx}"
-                            )
-                    except Exception:
-                        pass
-
+if c.get('files'):
+    st.markdown('##### 📥 인용된 원본 매뉴얼 다운로드')
+    with st.expander('📄 인용된 원본 매뉴얼 목록 (전체 보기)', expanded=True):
+        for f_idx, fpath_str in enumerate(c['files']):
+            fpath = Path(fpath_str)
+            c_cat = fpath.parent.name if fpath.parent.name != 'manuals' else '규격서'
+            c_col_txt, c_col_btn = st.columns([4, 1])
+            with c_col_txt:
+                st.markdown(f'• **[{c_cat}]** `{fpath.name}`')
+            with c_col_btn:
+                if fpath.exists():
+                    st.download_button(
+                        label='⬇️ 다운로드',
+                        data=fpath.read_bytes(),
+                        file_name=fpath.name,
+                        key=f'hist_dl_{f_idx}_{fpath.name}'
+                    )
 user_input = st.chat_input("하드웨어 배선, ROS 2 통신, YOLO 또는 비행 규정을 질문하세요...")
 
 if "calc_query_send" in st.session_state and st.session_state["calc_query_send"]:
