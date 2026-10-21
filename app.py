@@ -422,7 +422,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
             seen_f.add(fp)
 
     if route == "compare":
-        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content']}" for d in manual_docs]
+        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content'][:400]}" for d in manual_docs]
         m_txt = "\n".join(m_lines) if m_lines else "로컬 매뉴얼 자료 없음"
 
         w_lines = [f"[{i}] {w['title']}: {w['snippet']}" for i, w in enumerate(web_docs, start=1)]
@@ -494,7 +494,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
 
     context = []
     if locals().get('manual_docs'):
-        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content']}" for d in manual_docs]
+        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content'][:400]}" for d in manual_docs]
         context.append("[로컬 기술 매뉴얼]\n" + "\n".join(m_lines))
     if locals().get('web_docs'):
         w_lines = [f"[{i}] {w['title']}: {w['snippet']}" for i, w in enumerate(web_docs, start=1)]
