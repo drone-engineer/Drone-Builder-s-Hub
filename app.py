@@ -548,12 +548,8 @@ def answer_node(state: DroneQAState) -> DroneQAState:
 • `경로/파일명.pdf` (p.X) — [한국어로 번역 정제된 1줄 요약]
 """
             trans_res = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": summary_prompt}])
-            footer.append("📌 **참조 매뉴얼 및 페이지별 내용 요약:**
-
-
-" + "
-
-".join([f"- `{doc}` (p.{pg}) — {snip.replace('~', '-')}...  " for (doc, pg), snip in doc_page_map.items()])))
+            summary_items = [f"- `{doc}` (p.{pg}) — {snip.replace('~', '-')}..." for (doc, pg), snip in doc_page_map.items()]
+            footer.append("📌 **참조 매뉴얼 및 페이지별 내용 요약:**\n\n" + "\n\n".join(summary_items))
 
         if locals().get('web_docs'):
             links = [f"**[{i}] {w['title']}**  \n{w['link']}" for i, w in enumerate(web_docs, start=1)]
