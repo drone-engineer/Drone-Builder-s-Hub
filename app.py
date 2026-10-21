@@ -548,6 +548,12 @@ def answer_node(state: DroneQAState) -> DroneQAState:
 • `경로/파일명.pdf` (p.X) — [한국어로 번역 정제된 1줄 요약]
 """
             trans_res = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": summary_prompt}])
+            doc_page_map = {}
+            if 'manual_docs' in locals() and manual_docs:
+                for d in manual_docs:
+                    k = (f"{d['category']}/{d['source_file']}", d.get('page', 1))
+                    if k not in doc_page_map:
+                        doc_page_map[k] = d['content'].replace('\n', ' ').replace('~', '-').strip()[:70]
             summary_items = [f"- `{doc}` (p.{pg}) — {snip.replace('~', '-')}..." for (doc, pg), snip in doc_page_map.items()]
             footer.append("📌 **참조 매뉴얼 및 페이지별 내용 요약:**\n\n" + "\n\n".join(summary_items))
 
@@ -1060,11 +1066,11 @@ if user_input:
                 else:
                     st.markdown(ans)
 
-                if ref_files or web_docs:
+                if locals().get('ref_files') or locals().get('web_docs'):
                     st.markdown("##### 📚 인용된 공식 근거 및 출처 자료")
 
                     # 1. 로컬 매뉴얼 (PDF 및 MD)
-                    if ref_files:
+                    if locals().get('ref_files'):
                         st.caption("📄 **로컬 지식 베이스 규격서 (PDF / Markdown):**")
                         cols = st.columns(min(len(ref_files), 4))
                         for col_idx, f_info in enumerate(ref_files):
