@@ -493,8 +493,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
             part_manual = "매뉴얼 데이터를 불러오는 중 오류가 발생했습니다."
             part_web = "웹 검색 데이터를 불러오는 중 오류가 발생했습니다."
 
-        web_docs = locals().get('web_docs', [])
-        if web_docs:
+        if locals().get('web_docs'):
             links = [f"**[{i}] {w['title']}**  \n{w['link']}" for i, w in enumerate(web_docs, start=1)]
             part_web += "\n\n---\n**🌐 Tavily AI 실시간 기술 출처:**\n\n" + "\n\n".join(links)
 
@@ -510,12 +509,10 @@ def answer_node(state: DroneQAState) -> DroneQAState:
         }
 
     context = []
-    manual_docs = locals().get('manual_docs', [])
-        if manual_docs:
+    if locals().get('manual_docs'):
         m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content']}" for d in manual_docs]
         context.append("[로컬 기술 매뉴얼]\n" + "\n".join(m_lines))
-    web_docs = locals().get('web_docs', [])
-        if web_docs:
+    if locals().get('web_docs'):
         w_lines = [f"[{i}] {w['title']}: {w['snippet']}" for i, w in enumerate(web_docs, start=1)]
         context.append("[Tavily AI 기술 검색 결과]\n" + "\n".join(w_lines))
 
@@ -539,8 +536,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
         base_ans = res.choices[0].message.content.strip()
 
         footer = []
-        manual_docs = locals().get('manual_docs', [])
-        if manual_docs:
+        if locals().get('manual_docs'):
             summary_prompt = """아래 매뉴얼 발췌본들을 바탕으로, 각 파일과 페이지에 적힌 핵심 사양을 '1줄의 한국어 요약문'으로 번역/정제하세요.
 [발췌본]
 """ + "\n".join([f"- `{d['category']}/{d['source_file']}` (p.{d['page']}): {d['content'][:150].replace(chr(10), ' ')}" for d in manual_docs]) + """
@@ -550,8 +546,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
             trans_res = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": summary_prompt}])
             footer.append("📌 **참조 매뉴얼 및 페이지별 내용 요약:**\n\n" + trans_res.choices[0].message.content.strip())
 
-        web_docs = locals().get('web_docs', [])
-        if web_docs:
+        if locals().get('web_docs'):
             links = [f"**[{i}] {w['title']}**  \n{w['link']}" for i, w in enumerate(web_docs, start=1)]
             footer.append("**🌐 Tavily AI 실시간 기술 출처:**\n\n" + "\n\n".join(links))
 
@@ -1083,8 +1078,7 @@ if user_input:
                                     pass
 
                     # 2. 웹 검색 공식 출처 링크 카드
-                    web_docs = locals().get('web_docs', [])
-        if web_docs:
+                    if locals().get('web_docs'):
                         st.caption("🌐 **실시간 웹 기술 데이터시트 링크:**")
                         w_cols = st.columns(min(len(web_docs), 2))
                         for w_idx, w_item in enumerate(web_docs[:4]):
