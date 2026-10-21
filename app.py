@@ -987,23 +987,26 @@ for idx, c in enumerate(st.session_state["chat_history"]):
         else:
             st.markdown(c["content"])
 
-if c.get('files'):
-    st.markdown('##### 📥 인용된 원본 매뉴얼 다운로드')
-    with st.expander('📄 인용된 원본 매뉴얼 목록 (전체 보기)', expanded=True):
-        for f_idx, fpath_str in enumerate(c['files']):
-            fpath = Path(fpath_str)
-            c_cat = fpath.parent.name if fpath.parent.name != 'manuals' else '규격서'
-            c_col_txt, c_col_btn = st.columns([4, 1])
-            with c_col_txt:
-                st.markdown(f'• **[{c_cat}]** `{fpath.name}`')
-            with c_col_btn:
-                if fpath.exists():
-                    st.download_button(
-                        label='⬇️ 다운로드',
-                        data=fpath.read_bytes(),
-                        file_name=fpath.name,
-                        key=f'hist_dl_{f_idx}_{fpath.name}'
-                    )
+    # --- [세로형 매뉴얼 다운로드 목록 (전체 파일명 표출)] ---
+    ref_list = locals().get('ref_files', [])
+    if ref_list:
+        st.markdown('##### 📥 인용된 원본 매뉴얼 다운로드')
+        with st.expander(f'📄 전체 매뉴얼 목록 열기 ({len(ref_list)}건)', expanded=True):
+            for f_idx, f_item in enumerate(ref_list):
+                fpath = Path(f_item['path']) if isinstance(f_item, dict) else Path(f_item)
+                fname = f_item.get('name', fpath.name) if isinstance(f_item, dict) else fpath.name
+                c_cat = fpath.parent.name if fpath.parent.name != 'manuals' else '규격서'
+                col_txt, col_btn = st.columns([4, 1])
+                with col_txt:
+                    st.markdown(f'• **[{c_cat}]** `{fname}`')
+                with col_btn:
+                    if fpath.exists():
+                        st.download_button(
+                            label='⬇️ 다운로드',
+                            data=fpath.read_bytes(),
+                            file_name=fname,
+                            key=f'live_dl_{f_idx}_{fname}'
+                        )
 user_input = st.chat_input("하드웨어 배선, ROS 2 통신, YOLO 또는 비행 규정을 질문하세요...")
 
 if "calc_query_send" in st.session_state and st.session_state["calc_query_send"]:
