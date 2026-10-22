@@ -1,3 +1,74 @@
+# ==============================================================================
+# 국내 대표 드론 거점 및 상세 도로명/지번 지원 하이브리드 지오코딩 엔진
+# ==============================================================================
+KOREA_DRONE_SPOTS = {
+    "광주": {"lat": 35.1595, "lon": 126.8526, "name": "광주광역시 (드론비행공원)"},
+    "광주광역시": {"lat": 35.1595, "lon": 126.8526, "name": "광주광역시 (드론비행공원)"},
+    "전남광주": {"lat": 35.1595, "lon": 126.8526, "name": "광주광역시 (드론비행공원)"},
+    "경기광주": {"lat": 37.4087, "lon": 127.2550, "name": "경기도 광주시"},
+    "영월": {"lat": 37.1837, "lon": 128.4619, "name": "강원도 영월 국토부 드론전용공역"},
+    "영월군": {"lat": 37.1837, "lon": 128.4619, "name": "강원도 영월 국토부 드론전용공역"},
+    "화성": {"lat": 37.2285, "lon": 126.8920, "name": "경기도 화성 비봉 드론전용비행장"},
+    "화성시": {"lat": 37.2285, "lon": 126.8920, "name": "경기도 화성 비봉 드론전용비행장"},
+    "이천": {"lat": 37.2723, "lon": 127.4350, "name": "경기도 이천시 야외 테스트필드"},
+    "이천시": {"lat": 37.2723, "lon": 127.4350, "name": "경기도 이천시 야외 테스트필드"},
+    "판교": {"lat": 37.3947, "lon": 127.1112, "name": "경기도 성남시 판교 자율비행 연구단지"},
+    "광나루": {"lat": 37.5502, "lon": 127.1215, "name": "서울 한강 광나루 드론공원"},
+    "보은": {"lat": 36.4894, "lon": 127.7290, "name": "충청북도 보은 드론전용시험비행장"},
+    "고성": {"lat": 34.9754, "lon": 128.3222, "name": "경상남도 고성 드론통합시험센터"},
+    "대전": {"lat": 36.3504, "lon": 127.3845, "name": "대전 항공우주연구원 R&D 거점"},
+    "서울": {"lat": 37.5665, "lon": 126.9780, "name": "서울특별시"},
+    "인천": {"lat": 37.4563, "lon": 126.7052, "name": "인천광역시"},
+    "대구": {"lat": 35.8714, "lon": 128.6014, "name": "대구광역시"},
+    "부산": {"lat": 35.1796, "lon": 129.0756, "name": "부산 해양·물류 드론실증특구"},
+    "제주": {"lat": 33.4996, "lon": 126.5312, "name": "제주 스마트 드론실증도시"}
+}
+
+def geocode_address(query_text: str):
+    raw_q = query_text.strip()
+    if not raw_q:
+        return None, None, ""
+
+    compact_q = raw_q.replace(" ", "")
+    for key, val in KOREA_DRONE_SPOTS.items():
+        if key == compact_q or key in compact_q or compact_q in key:
+            return val["lat"], val["lon"], val["name"]
+
+    # 1. Nominatim 도로명 주소 검색
+    try:
+        headers = {"User-Agent": "DroneBuildersHub_Geocoder/2.0"}
+        osm_url = "https://nominatim.openstreetmap.org/search"
+        osm_params = {"q": raw_q, "format": "json", "countrycodes": "kr", "addressdetails": 1, "limit": 1}
+        res = requests.get(osm_url, params=osm_params, headers=headers, timeout=4.0).json()
+        if res and len(res) > 0:
+            top = res[0]
+            lat, lon = float(top["lat"]), float(top["lon"])
+            addr_info = top.get("address", {})
+            city = addr_info.get("city") or addr_info.get("province") or addr_info.get("state", "")
+            borough = addr_info.get("borough") or addr_info.get("suburb") or addr_info.get("district", "")
+            road = addr_info.get("road") or addr_info.get("neighbourhood") or ""
+            display_label = f"{city} {borough} {road}".strip() or top.get("display_name", raw_q).split(",")[0].strip()
+            return lat, lon, display_label
+    except Exception:
+        pass
+
+    # 2. Open-Meteo 지오코딩 폴백
+    candidates = [raw_q, raw_q + "시", raw_q + "군", raw_q + "구"]
+    geo_url = "https://geocoding-api.open-meteo.com/v1/search"
+    for c in candidates:
+        try:
+            params = {"name": c, "count": 1, "language": "ko", "format": "json"}
+            res_om = requests.get(geo_url, params=params, timeout=4.0).json()
+            if "results" in res_om and len(res_om["results"]) > 0:
+                top = res_om["results"][0]
+                name = top.get("name", c)
+                admin = top.get("admin1", "")
+                display_name = f"{admin} {name}".strip() if admin else name
+                return float(top["latitude"]), float(top["longitude"]), display_name
+        except Exception:
+            continue
+    return None, None, ""
+
 # --- [복합 항공 기상 정밀 관제 엔진] ---
 def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
     url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_gusts_10m&hourly=wind_speed_10m,wind_speed_40m,wind_speed_80m,wind_speed_120m,wind_speed_180m,precipitation_probability&forecast_days=1&timezone=Asia%2FSeoul"
