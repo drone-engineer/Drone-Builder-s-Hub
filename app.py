@@ -99,7 +99,6 @@ def geocode_address(query_text: str):
     return None, None, ""
 
 def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
-    # Open-Meteo 공식 규격: 10m, 80m, 120m, 180m 고도별 풍속 요청
     url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_gusts_10m&hourly=wind_speed_10m,wind_speed_80m,wind_speed_120m,wind_speed_180m,precipitation_probability&forecast_days=1&timezone=Asia%2FSeoul"
     try:
         res = requests.get(url, timeout=5.0).json()
@@ -114,36 +113,45 @@ def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
         w80 = hourly.get("wind_speed_80m", [w10])[0]
         w120 = hourly.get("wind_speed_120m", [w80])[0]
         w180 = hourly.get("wind_speed_180m", [w120])[0]
-
-        # 40m는 대기경계층 10m와 80m 사이를 항공 공학적으로 보간 산출
         w40 = round(w10 + (w80 - w10) * 0.43, 1)
 
-        alt_winds = {
-            10: w10,
-            40: w40,
-            80: w80,
-            120: w120,
-            180: w180,
-        }
-
+        alt_winds = {10: w10, 40: w40, 80: w80, 120: w120, 180: w180}
         selected_wind = alt_winds.get(target_alt, alt_winds[80])
 
-        risks = []
-        if selected_wind >= 10.0 or gust >= 13.0:
-            risks.append(f"🚨 [강풍 위험] 상공 {target_alt}m 풍속({selected_wind}m/s) 또는 돌풍({gust}m/s) 한계 초과")
-        if temp <= 0.0:
-            risks.append("❄️ [저온 주의] LiPo 배터리 급격한 전압 강하 위험 (보온 필수)")
-        if rain_prob >= 40:
-            risks.append("🌧️ [강수 위험] ESC 및 전장 단락(쇼트) 방지를 위한 비행 중지 권고")
+        danger_risks = []
+        warning_risks = []
 
-        status = "안전" if not risks else ("주의" if len(risks) == 1 else "비행 금지")
+        # 풍속 판정 기준 완전 일치 (10.0m/s 이상 위험, 7.0m/s 이상 주의)
+        if selected_wind >= 10.0 or gust >= 13.0:
+            danger_risks.append(f"🚨 [강풍 위험] 상공 {target_alt}m 풍속({selected_wind}m/s) 또는 돌풍({gust}m/s) 한계 초과")
+        elif selected_wind >= 7.0 or gust >= 10.0:
+            warning_risks.append(f"⚠️ [풍속 주의] 상공 {target_alt}m 풍속({selected_wind}m/s) 기체 자세제어 및 배터리 소모 주의")
+
+        if temp <= 0.0:
+            danger_risks.append("❄️ [저온 주의] LiPo 배터리 급격한 전압 강하 위험 (보온 필수)")
+        elif temp <= 5.0:
+            warning_risks.append("🌡️ [저온 환경] 배터리 효율 감소 주의")
+
+        if rain_prob >= 50:
+            danger_risks.append("🌧️ [강수 위험] ESC 및 전장 단락(쇼트) 방지를 위한 비행 중지")
+        elif rain_prob >= 30:
+            warning_risks.append("🌦️ [강수 가능성] 비행 전 우천 대비 필요")
+
+        if danger_risks:
+            status = "비행 금지"
+        elif warning_risks:
+            status = "주의"
+        else:
+            status = "안전"
+
+        all_risks = danger_risks + warning_risks
         return {
             "status": status, "temp": temp, "wind": selected_wind, "alt_winds": alt_winds,
-            "gust": gust, "rain_prob": rain_prob, "risks": risks
+            "gust": gust, "rain_prob": rain_prob, "risks": all_risks,
+            "is_danger": bool(danger_risks), "is_warning": bool(warning_risks)
         }
     except Exception:
         return None
-
 
 # --- [모터 보간 연산 함수] ---
 def interpolate_motor_benchmark(motor_name: str, target_thrust_g: float):
@@ -319,7 +327,7 @@ with st.sidebar:
             else:
                 st.warning("URL을 입력해 주세요.")
 
-    # 4. [주소 엔터 검색 + 📍 GPS 연동 완전체] 실시간 비행 기상 관제
+    # 4. 실시간 비행 기상 관제 (엔터 주소검색 + 📍 GPS 연동 + 전 고도별 표)
     with st.expander("🌦️ 실시간 비행 기상 관제 (클릭하여 열기)", expanded=False):
         if "current_lat" not in st.session_state:
             st.session_state["current_lat"] = 37.2723
@@ -367,17 +375,18 @@ with st.sidebar:
 
         wx = get_weather_safety(st.session_state["current_lat"], st.session_state["current_lon"], target_alt=selected_alt)
         if wx:
-            status_badge = {"안전": "🟢 **비행 안전**", "주의": "🟡 **비행 주의**", "비행 금지": "🔴 **비행 금지**"}.get(wx["status"], "⚪ 비행 대기")
+            status_badge = {"안전": "🟢 **비행 안전**", "주의": "🟡 **비행 주의**", "비행 금지": "🔴 **비행 금지 (위험)**"}.get(wx["status"], "⚪ 비행 대기")
             st.markdown(f"#### {status_badge}")
 
             col_m1, col_m2 = st.columns(2)
             col_m1.metric("현재 기온", f"{wx['temp']} °C")
-            col_m2.metric(f"상공 {selected_alt}m 풍속", f"{wx['wind']} m/s")
+            col_m2.metric(f"선택 {selected_alt}m 풍속", f"{wx['wind']} m/s")
 
             col_m3, col_m4 = st.columns(2)
             col_m3.metric("최대 순간 돌풍", f"{wx['gust']} m/s")
             col_m4.metric("강수 확률", f"{wx['rain_prob']} %")
-            # 📊 [전체 고도별 풍속 한눈에 보기 표]
+
+            # 전 고도별 실시간 풍속 표
             st.markdown("##### 🛫 전 고도별 실시간 풍속")
             alt_data = []
             for a, w in sorted(wx.get("alt_winds", {}).items()):
@@ -388,9 +397,12 @@ with st.sidebar:
 
             if wx["risks"]:
                 for r in wx["risks"]:
-                    st.warning(r)
+                    if "🚨" in r or "❄️" in r:
+                        st.error(r)
+                    else:
+                        st.warning(r)
             else:
-                st.success("✅ 돌풍, 기온, 강수 종합 기준 비행 적합 상태입니다.")
+                st.success("✅ 풍속, 돌풍, 기온, 강수 종합 기준 비행 적합 상태입니다.")
         else:
             st.caption("기상 관제 서버 연결 대기 중...")
 
