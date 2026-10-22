@@ -63,15 +63,15 @@ def interpolate_motor_benchmark(motor_name: str, target_thrust_g: float):
         pass
     return None
 
-# --- [3대 페르소나 시스템 프롬프트] ---
+# --- [3대 페르소나 시스템 지침] ---
 PERSONA_PROMPTS = {
-    "현장 엔지니어 (핀맵/명령어 중심)": """당신은 15년 경력의 현장 수석 드론 하드웨어/임베디드 엔지니어입니다.
-- 불필요한 사설은 배제하고, 실무 수치, 핀맵(VCC, GND, TX, RX, I2C, CAN), 하드웨어 결선 주의사항, 리눅스/ROS 2 실행 명령어를 중심으로 명확하게 답변하십시오.
+    "현장 엔지니어 (핀맵/명령어 중심)": """당신은 15년 경력의 수석 드론 하드웨어/임베디드 엔지니어입니다.
+- 불필요한 사설이나 인사말은 생략하고 실무 수치(V, A, W, g/W), 핀맵(VCC, GND, TX, RX, I2C, CAN), DShot/PWM 설정값, 터미널 실행 명령어를 중심으로 명확하게 답변하십시오.
 - 모터 결선이나 전원 배선 질문 시 답변 최상단에 "⚡ [하드웨어 결선 주의]" 경고를 반드시 포함하십시오.""",
 
     "DIY 빌더 (기초 원리 해설)": """당신은 친절한 드론 자작(DIY) 멘토입니다.
 - 초보 제작자도 쉽게 이해할 수 있도록 기본 규격과 비행 원리를 단계별로 친절하게 설명하십시오.
-- 조립이나 비행 시 자주 하는 실수와 유의할 점을 알기 쉽게 안내하십시오.""",
+- 조립이나 비행 시 자주 하는 실수(배터리 전압강하, 무게중심, 프로펠러 체결)와 유의할 점을 알기 쉽게 안내하십시오.""",
 
     "비행 안전점검관 (규정/체크리스트)": """당신은 대한민국 항공안전법 공인 비행 안전점검관입니다.
 - 항공안전법 초경량비행장치 규정, 비행승인 및 촬영허가(드론원스톱), 최대 비행고도(150m) 기준을 엄격하게 검토하여 답변하십시오.
@@ -82,7 +82,6 @@ PERSONA_PROMPTS = {
 with st.sidebar:
     st.title("🛸 드론 비행 & 설계 포털")
 
-    # 1. 검색 모드 선택
     st.subheader("⚙️ 검색 옵션")
     search_mode = st.radio(
         "검색 모드",
@@ -90,7 +89,6 @@ with st.sidebar:
         index=0
     )
 
-    # 2. 매뉴얼 계통 필터
     manual_cats = [
         "전체", "01_비행제어기_FC", "02_모터_구동계", "03_변속기_ESC", "04_프로펠러_공력",
         "05_전원_배터리_PDB", "06_센서_항법장치", "07_조종_데이터링크", "08_영상_FPV_짐벌",
@@ -99,7 +97,6 @@ with st.sidebar:
     ]
     selected_cat = st.selectbox("계통 필터 (RAG)", manual_cats)
 
-    # 3. 답변 스타일 (페르소나)
     selected_persona = st.selectbox(
         "답변 스타일",
         ["현장 엔지니어 (핀맵/명령어 중심)", "DIY 빌더 (기초 원리 해설)", "비행 안전점검관 (규정/체크리스트)"],
@@ -107,7 +104,7 @@ with st.sidebar:
     )
     st.markdown("---")
 
-    # 4. [복원] 요구 추력 계산기
+    # 1. 요구 추력 계산기
     with st.expander("📐 요구 추력 계산기 (클릭하여 열기)", expanded=False):
         frame_type = st.selectbox("모터 개수", ["4개 (쿼드콥터)", "6개 (헥사콥터)", "8개 (옥토콥터)"], key="sb_frame")
         motor_count = 4 if "4개" in frame_type else (6 if "6개" in frame_type else 8)
@@ -132,7 +129,7 @@ with st.sidebar:
             st.session_state["preset_query"] = calc_q
             st.rerun()
 
-    # 5. [복원] 비행시간 분석 & 모터 역설계 시뮬레이터 (3개 탭 완전 복원)
+    # 2. 비행시간 분석 & 모터 역설계 시뮬레이터 (3개 탭)
     with st.expander("⏱️ 비행시간 분석 & 모터 역설계 시뮬레이터", expanded=False):
         tab1, tab2, tab3 = st.tabs(["🎯 목표시간 모터 역추천", "📊 순방향 체공시간", "🔬 실측 벤치마크 시뮬레이터"])
 
@@ -198,7 +195,7 @@ with st.sidebar:
                 bc1.metric("호버링 스로틀", f"{inter_res['throttle']} %", inter_res['status'])
                 bc2.metric("실측 모터 효율", f"{inter_res['eff_gw']} g/W")
 
-    # 6. [복원] 웹 링크로 스펙표 즉시 수집 & 학습
+    # 3. 웹 링크로 스펙표 즉시 수집 & 학습
     with st.expander("📥 웹 링크로 스펙표 즉시 수집 & 학습", expanded=False):
         c_url = st.text_input("수집할 부품 웹 링크 URL", placeholder="https://shop.tmotor.com/products/...")
         c_folder = st.selectbox("저장할 매뉴얼 폴더", manual_cats[1:], index=1)
@@ -208,7 +205,7 @@ with st.sidebar:
             else:
                 st.warning("URL을 입력해 주세요.")
 
-    # 7. 실시간 비행 기상 관제
+    # 4. 실시간 비행 기상 관제
     with st.expander("🌦️ 실시간 비행 기상 관제 (클릭하여 열기)", expanded=False):
         sel_loc = st.selectbox("관제 지역", ["서울특별시 (광나루)", "경기도 이천시", "경기도 성남시 (판교)", "경기도 화성시", "강원도 영월군"])
         coords = {"lat": 37.5502, "lon": 127.1215}
@@ -231,7 +228,7 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # 8. 3개 시트 엑셀 다운로드
+    # 5. 3개 시트 엑셀 다운로드
     st.subheader("📊 시스템 운영 로그")
     def make_excel_data():
         buf = io.BytesIO()
@@ -372,7 +369,6 @@ if user_prompt:
         st.markdown(user_prompt)
 
     with st.chat_message("assistant"):
-        # 결선 안전 경고 배너
         is_wire_hazard = any(k in user_prompt.lower() for k in ["vcc", "gnd", "결선", "배선", "쇼트", "단락", "5v", "12v", "극성"])
         if is_wire_hazard:
             st.warning("⚡ **[하드웨어 결선 주의]** VCC(+)와 GND(-) 극성 역전 시 ESC/FC 전소 화재 위험이 있습니다. 배선 전 반드시 전압 테스터기로 통전을 점검하십시오.")
@@ -433,35 +429,47 @@ if user_prompt:
                 final_ans = p_ana
 
             else:
-                ctx = "\n".join([f"[{d['category']}/{d['source_file']} p.{d['page']}] {d['content']}" for d in manual_docs]) if route == "manual" else "\n".join([f"[{w['title']}] {w['snippet']}" for w in web_docs])
-                sys_msg = f"""{active_persona}
+                ctx_lines = [f"• [{d['category']} | {d['source_file']} p.{d['page']}]\n  {d['content']}" for d in manual_docs] if route == "manual" else [f"• [{w['title']}]\n  {w['snippet']}" for w in web_docs]
+                ctx = "\n\n".join(ctx_lines) if ctx_lines else "참조 가능한 로컬 규격 데이터가 없습니다."
 
-당신은 드론 빌더스 허브의 공인 수석 기술 자문 어시스턴트입니다.
-제공된 근거 자료를 바탕으로 질문에 대해 체계적이고 풍부한 마크다운으로 답변하십시오.
+                integrated_prompt = f"""[당신의 역할 및 답변 페르소나]
+{active_persona}
 
-[출력 규칙]
-1. 본문은 핵심 조항, 실무 수치, 절차를 논리적으로 서술하십시오.
-2. 답변 말미에 반드시 아래 형식으로 참조 쪽수 요약을 넣으십시오:
+[사용자 질문]
+{user_prompt}
+
+[로컬 매뉴얼 및 기술 규격 근거 자료]
+{ctx}
+
+[반드시 준수할 출력 지침]
+1. 당신의 페르소나 톤앤매너에 맞추어, 위 근거 자료의 실제 수치(추력 g/kg, 전압 V, 전류 A, 효율 g/W), 배선 핀맵, 규정 조항을 상세하고 체계적으로 서술하십시오.
+2. 서론이나 추상적인 인사말은 생략하고, 마크다운 소제목(###)과 불릿 항목으로 작성하십시오.
+3. 답변 맨 마지막에는 반드시 아래 형식으로 참조 쪽수 요약을 넣으십시오:
 ---
 📌 **참조 매뉴얼 및 인용 근거:**
-• `[계통명] 파일명.pdf` (p.X) — 핵심 내용 1줄 요약"""
+• `[계통명] 파일명.pdf` (p.X) — 해당 문서의 핵심 기술 규격 요약 1줄"""
 
                 try:
                     res = client.chat.completions.create(
                         model=MODEL,
-                        messages=[{"role": "system", "content": sys_msg}, {"role": "user", "content": f"질문: {user_prompt}\n\n[근거 자료]\n{ctx}"}],
+                        messages=[{"role": "user", "content": integrated_prompt}],
                         max_completion_tokens=1500,
                         timeout=35.0
                     )
-                    final_ans = res.choices[0].message.content or "답변 내용을 정리 중입니다."
+                    final_ans = res.choices[0].message.content or ""
+                    if len(final_ans.strip()) < 10:
+                        raise ValueError("응답 비어있음")
                 except Exception:
-                    res = client.chat.completions.create(
-                        model="gpt-4o-mini",
-                        messages=[{"role": "system", "content": sys_msg}, {"role": "user", "content": f"질문: {user_prompt}\n\n[근거 자료]\n{ctx}"}],
-                        max_tokens=1200,
-                        timeout=30.0
-                    )
-                    final_ans = res.choices[0].message.content
+                    try:
+                        res_fb = client.chat.completions.create(
+                            model="gpt-4o-mini",
+                            messages=[{"role": "user", "content": integrated_prompt}],
+                            max_tokens=1200,
+                            timeout=30.0
+                        )
+                        final_ans = res_fb.choices[0].message.content
+                    except Exception as e2:
+                        final_ans = f"### 📘 [{selected_persona}] 기술 규격 요약\n\n" + "\n".join([f"- **{d['source_file']}**: {d['content'][:150]}..." for d in manual_docs])
 
                 st.markdown(final_ans)
 
