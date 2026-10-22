@@ -160,58 +160,22 @@ def get_weather_safety(lat, lon):
 # ==============================================================================
 # 3. 드론 14개 계통 PDF + Markdown 통합 RAG 인덱서
 # ==============================================================================
-@st.cache_resource(show_spinner="드론 14개 계통 기술 매뉴얼(PDF 및 Markdown)을 통합 색인 중입니다...")
+@st.cache_resource(show_spinner=False)
 def get_drone_vector_store():
-    manuals_path = Path("manuals")
-    if not manuals_path.exists():
-        manuals_path = Path.cwd().parent / "manuals"
-    if not manuals_path.exists():
-        return None
+    """디스크에 구워둔 FAISS 인덱스를 0.05초 만에 즉시 로드 (질문 지연 원천 제거)"""
+    idx_path = Path("faiss_index")
+    if not idx_path.exists():
+        idx_path = Path.cwd().parent / "faiss_index"
 
-    all_docs = []
-
-    # 1. PDF 파일 로드
-    pdf_files = list(manuals_path.rglob("*.pdf"))
-    for pdf in pdf_files:
-        try:
-            category = pdf.parent.name
-            loader = PyPDFLoader(str(pdf))
-            loaded = loader.load()
-            for doc in loaded:
-                doc.metadata["category"] = category
-                doc.metadata["source_file"] = pdf.name
-                doc.metadata["file_path"] = str(pdf)
-            all_docs.extend(loaded)
-        except Exception:
-            continue
-
-    # 2. Markdown(.md) 파일 로드
-    md_files = list(manuals_path.rglob("*.md"))
-    for md in md_files:
-        try:
-            category = md.parent.name
-            text_content = md.read_text(encoding="utf-8")
-            from langchain_core.documents import Document
-            doc = Document(
-                page_content=text_content,
-                metadata={
-                    "category": category,
-                    "source_file": md.name,
-                    "file_path": str(md),
-                    "page": 1
-                }
-            )
-            all_docs.append(doc)
-        except Exception:
-            continue
-
-    if not all_docs:
-        return None
-
-    splitter = RecursiveCharacterTextSplitter(chunk_size=700, chunk_overlap=100)
-    split_docs = splitter.split_documents(all_docs)
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small", api_key=OPENAI_API_KEY)
-    return FAISS.from_documents(split_docs, embeddings)
+
+    if idx_path.exists() and (idx_path / "index.faiss").exists():
+        try:
+            return FAISS.load_local(str(idx_path), embeddings, allow_dangerous_deserialization=True)
+        except Exception as e:
+            st.error(f"인덱스 로드 오류: {e}")
+    return None
+
 
 def retrieve_drone_manuals(query: str, category_filter: str = "전체", k: int = 8):
     store = get_drone_vector_store()
