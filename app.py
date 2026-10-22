@@ -99,7 +99,8 @@ def geocode_address(query_text: str):
     return None, None, ""
 
 def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
-    url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_gusts_10m&hourly=wind_speed_10m,wind_speed_40m,wind_speed_80m,wind_speed_120m,wind_speed_180m,precipitation_probability&forecast_days=1&timezone=Asia%2FSeoul"
+    # Open-Meteo 공식 규격: 10m, 80m, 120m, 180m 고도별 풍속 요청
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_gusts_10m&hourly=wind_speed_10m,wind_speed_80m,wind_speed_120m,wind_speed_180m,precipitation_probability&forecast_days=1&timezone=Asia%2FSeoul"
     try:
         res = requests.get(url, timeout=5.0).json()
         current = res.get("current", {})
@@ -109,12 +110,20 @@ def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
         gust = current.get("wind_gusts_10m", 0.0)
         rain_prob = hourly.get("precipitation_probability", [0])[0]
 
+        w10 = current.get("wind_speed_10m", 0.0)
+        w80 = hourly.get("wind_speed_80m", [w10])[0]
+        w120 = hourly.get("wind_speed_120m", [w80])[0]
+        w180 = hourly.get("wind_speed_180m", [w120])[0]
+
+        # 40m는 대기경계층 10m와 80m 사이를 항공 공학적으로 보간 산출
+        w40 = round(w10 + (w80 - w10) * 0.43, 1)
+
         alt_winds = {
-            10: current.get("wind_speed_10m", 0.0),
-            40: hourly.get("wind_speed_40m", [current.get("wind_speed_10m", 0.0)])[0],
-            80: hourly.get("wind_speed_80m", [current.get("wind_speed_10m", 0.0)])[0],
-            120: hourly.get("wind_speed_120m", [current.get("wind_speed_10m", 0.0)])[0],
-            180: hourly.get("wind_speed_180m", [current.get("wind_speed_10m", 0.0)])[0],
+            10: w10,
+            40: w40,
+            80: w80,
+            120: w120,
+            180: w180,
         }
 
         selected_wind = alt_winds.get(target_alt, alt_winds[80])
@@ -134,6 +143,7 @@ def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
         }
     except Exception:
         return None
+
 
 # --- [모터 보간 연산 함수] ---
 def interpolate_motor_benchmark(motor_name: str, target_thrust_g: float):
@@ -367,6 +377,14 @@ with st.sidebar:
             col_m3, col_m4 = st.columns(2)
             col_m3.metric("최대 순간 돌풍", f"{wx['gust']} m/s")
             col_m4.metric("강수 확률", f"{wx['rain_prob']} %")
+            # 📊 [전체 고도별 풍속 한눈에 보기 표]
+            st.markdown("##### 🛫 전 고도별 실시간 풍속")
+            alt_data = []
+            for a, w in sorted(wx.get("alt_winds", {}).items()):
+                tag = "지표면 10m (이착륙)" if a == 10 else ("상공 120m (법정 한계)" if a == 120 else f"상공 {a}m")
+                status_icon = "🔴 위험" if w >= 10.0 else ("🟡 주의" if w >= 7.0 else "🟢 양호")
+                alt_data.append({"고도": tag, "풍속": f"{w} m/s", "상태": status_icon})
+            st.dataframe(pd.DataFrame(alt_data), hide_index=True, use_container_width=True)
 
             if wx["risks"]:
                 for r in wx["risks"]:
