@@ -41,6 +41,38 @@ if not OPENAI_API_KEY or OPENAI_API_KEY.startswith("운영팀에서_"):
     st.error("⚠️ OPENAI_API_KEY가 설정되지 않았습니다. .streamlit/secrets.toml을 확인해 주세요.")
     st.stop()
 
+
+def interpolate_motor_benchmark(motor_name: str, target_thrust_g: float):
+    """실측 제원표(JSON)에서 목표 추력에 해당하는 스로틀, 전력(W), 전류(A) 선형 보간"""
+    bpath = Path("motor_benchmarks.json")
+    if not bpath.exists():
+        bpath = Path.cwd().parent / "motor_benchmarks.json"
+    if not bpath.exists():
+        return None
+    try:
+        data = json.loads(bpath.read_text(encoding="utf-8"))
+        m_info = data.get(motor_name)
+        if not m_info:
+            return None
+        curve = sorted(m_info["curve"], key=lambda x: x["thrust_g"])
+        if target_thrust_g <= curve[0]["thrust_g"]:
+            return {**curve[0], "status": "호버링 여유 (저부하)"}
+        if target_thrust_g >= curve[-1]["thrust_g"]:
+            return {**curve[-1], "status": "⚠️ 모터 최대 한계 초과 위험"}
+        for i in range(len(curve) - 1):
+            p1, p2 = curve[i], curve[i+1]
+            if p1["thrust_g"] <= target_thrust_g <= p2["thrust_g"]:
+                ratio = (target_thrust_g - p1["thrust_g"]) / (p2["thrust_g"] - p1["thrust_g"])
+                t_throttle = round(p1["throttle"] + ratio * (p2["throttle"] - p1["throttle"]), 1)
+                t_current = round(p1["current_a"] + ratio * (p2["current_a"] - p1["current_a"]), 2)
+                t_power = round(p1["power_w"] + ratio * (p2["power_w"] - p1["power_w"]), 1)
+                t_eff = round(p1["eff_gw"] + ratio * (p2["eff_gw"] - p1["eff_gw"]), 2)
+                status = "✅ 안정적 호버링 (권장 40~55%)" if 40 <= t_throttle <= 58 else ("⚠️ 고부하 호버링" if t_throttle > 58 else "저부하 운용")
+                return {"throttle": t_throttle, "current_a": t_current, "power_w": t_power, "eff_gw": t_eff, "status": status}
+    except Exception:
+        pass
+    return None
+
 client = OpenAI(api_key=OPENAI_API_KEY, timeout=60.0, max_retries=2)
 tavily_client = TavilyClient(api_key=TAVILY_API_KEY) if TAVILY_API_KEY else None
 
@@ -708,7 +740,7 @@ with st.sidebar:
     # ⏱️ 체공 시간 분석 & 역설계 모터 추천 시뮬레이터
     # ==============================================================================
     with st.expander("⏱️ 비행시간 분석 & 모터 역설계 시뮬레이터", expanded=False):
-        calc_tab1, calc_tab2 = st.tabs(["🎯 목표시간 모터 역추천", "📊 순방향 체공시간 계산"])
+        calc_tab1, calc_tab2, calc_tab3 = st.tabs(["🎯 목표시간 모터 역추천", "📊 순방향 체공시간 계산", "🔬 실측 제원표 정밀 시뮬레이터"])
 
         # --------------------------------------------------------------------------
         # 탭 1: 목표 비행시간 기준 모터/추진계 역설계
