@@ -18,7 +18,7 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "").strip()
-MODEL = os.getenv("OPENAI_MODEL", "gpt-4o").strip()
+MODEL = os.getenv("OPENAI_MODEL", "gpt-6-luna").strip()
 
 if not OPENAI_API_KEY:
     st.error("⚠️ .env 파일에 OPENAI_API_KEY가 설정되어 있지 않습니다.")
@@ -375,7 +375,7 @@ if user_prompt:
 (매뉴얼 기준 규격 수치)
 ===WEB===
 (웹 최신 동향)"""
-                res = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": fast_p}], max_tokens=850, timeout=35.0)
+                res = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": fast_p}], max_completion_tokens=850, timeout=35.0)
                 raw = res.choices[0].message.content
                 p_ana = raw.split("===ANALYSIS===")[-1].split("===MANUAL===")[0].strip() if "===ANALYSIS===" in raw else raw
                 p_man = raw.split("===MANUAL===")[-1].split("===WEB===")[0].strip() if "===MANUAL===" in raw else "매뉴얼 분석 완료"
@@ -396,7 +396,7 @@ if user_prompt:
                         {"role": "system", "content": "너는 드론 전문 엔지니어링 어시스턴트야. 제공된 규격과 법규 자료에 근거하여 명확하고 신뢰성 있게 한국어로 답변해."},
                         {"role": "user", "content": f"질문: {user_prompt}\n\n근거 자료:\n{ctx}"}
                     ],
-                    max_tokens=800,
+                    max_completion_tokens=800,
                     timeout=30.0
                 )
                 final_ans = res.choices[0].message.content
