@@ -1,0 +1,1813 @@
+[
+  {
+    "category": "01_비행제어기_FC",
+    "filename": "dRehmFlight_VTOL_documentation.pdf",
+    "relative_path": "01_비행제어기_FC/dRehmFlight_VTOL_documentation.pdf",
+    "topics": [
+      "ardupilot",
+      "px4",
+      "pixhawk",
+      "파라미터",
+      "비행모드",
+      "arm",
+      "시동",
+      "ekf",
+      "failsafe",
+      "미션플래너",
+      "qgc",
+      "배터리 설정"
+    ]
+  },
+  {
+    "category": "01_비행제어기_FC",
+    "filename": "_목록.md",
+    "relative_path": "01_비행제어기_FC/_목록.md",
+    "topics": [
+      "ardupilot",
+      "px4",
+      "pixhawk",
+      "파라미터",
+      "비행모드",
+      "arm",
+      "시동",
+      "ekf",
+      "failsafe",
+      "미션플래너",
+      "qgc",
+      "배터리 설정"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "Hobbywing_X6-Plus-MFP-24x8_technical-parameters.pdf",
+    "relative_path": "02_모터_구동계/Hobbywing_X6-Plus-MFP-24x8_technical-parameters.pdf",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "Hobbywing_XRotor-X6-Plus_manual.pdf",
+    "relative_path": "02_모터_구동계/Hobbywing_XRotor-X6-Plus_manual.pdf",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "Hobbywing_XRotor_X6_Plus_Spec.md",
+    "relative_path": "02_모터_구동계/Hobbywing_XRotor_X6_Plus_Spec.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "Hobbywing_XRotor_X8_Spec.md",
+    "relative_path": "02_모터_구동계/Hobbywing_XRotor_X8_Spec.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "Hobbywing_XRotor_X9_Spec.md",
+    "relative_path": "02_모터_구동계/Hobbywing_XRotor_X9_Spec.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "KDE-Direct_KDE5215XF-220_datasheet.pdf",
+    "relative_path": "02_모터_구동계/KDE-Direct_KDE5215XF-220_datasheet.pdf",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "motor_4kg_thrust_datasheet.pdf",
+    "relative_path": "02_모터_구동계/motor_4kg_thrust_datasheet.pdf",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "rd-m-x6.1-kv175-Datasheet-tRaIlQyOB-Datasheet.pdf",
+    "relative_path": "02_모터_구동계/rd-m-x6.1-kv175-Datasheet-tRaIlQyOB-Datasheet.pdf",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "Reflex-Drive-Brochure-10_08_2024-latest-Edits.pdf",
+    "relative_path": "02_모터_구동계/Reflex-Drive-Brochure-10_08_2024-latest-Edits.pdf",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_501-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_501-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_505-X_Standard_Integrated_Propul.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_505-X_Standard_Integrated_Propul.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_6007II-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_6007II-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_601-X_Integrated_Propulsion_Syst.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_601-X_Integrated_Propulsion_Syst.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_601-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_601-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_605-X_UAV_Propulsion_System_사양_데.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_605-X_UAV_Propulsion_System_사양_데.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_605-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_605-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_701-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_701-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_705-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_705-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_Air_Gear_355_Quick-Release_.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_Air_Gear_355_Quick-Release_.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_Air_Gear_355_Quick-Release_Drone.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_Air_Gear_355_Quick-Release_Drone.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_Air_Gear_355_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_Air_Gear_355_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_Air_Gear_450II_Multirotor_D.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_Air_Gear_450II_Multirotor_D.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_Air_Gear_450II_Multirotor_Drone_.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_Air_Gear_450II_Multirotor_Drone_.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_AT4130_Fixed-Wing_Brushless.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_AT4130_Fixed-Wing_Brushless.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_AT4130_Fixed-Wing_UAV_Propu.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_AT4130_Fixed-Wing_UAV_Propu.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_AT4130_Long_Shaft_Drone_Motor_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_AT4130_Long_Shaft_Drone_Motor_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_AT4130_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_AT4130_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U15L_Manned_Aircraft_Propul.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U15L_Manned_Aircraft_Propul.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U15L_Manned_Aircraft_Propulsion_.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U15L_Manned_Aircraft_Propulsion_.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U15XL_24S_Propulsion_Kit_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U15XL_24S_Propulsion_Kit_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U15XL_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U15XL_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U15XXL_KV29_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U15XXL_KV29_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U15XXL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U15XXL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U15XXL_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U15XXL_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_U8_-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_U8_-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_V10L_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_V10L_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_V10_VTOL_Propulsion_Kit_사양_.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_V10_VTOL_Propulsion_Kit_사양_.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_V505_VTOL_Propulsion_Kit_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_V505_VTOL_Propulsion_Kit_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_V602_VTOL_Propulsion_Kit_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_V602_VTOL_Propulsion_Kit_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_V605_VTOL_Propulsion_Kit_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_V605_VTOL_Propulsion_Kit_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_V804_VTOL_Propulsion_Kit_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_V804_VTOL_Propulsion_Kit_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_V807_VTOL_Propulsion_Kit_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_V807_VTOL_Propulsion_Kit_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1028_VTOL_Propulsion_System_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1028_VTOL_Propulsion_System_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1032_VTOL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1032_VTOL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1035_VTOL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1035_VTOL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1040_VTOL_Propulsion_System_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1040_VTOL_Propulsion_System_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1155_VTOL_Propulsion_System_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1155_VTOL_Propulsion_System_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1165_VTOL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1165_VTOL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1180_VTOL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1180_VTOL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL1380_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL1380_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL5009_VTOL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL5009_VTOL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL6011_VTOL_Drone_Propulsion_Sys.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL6011_VTOL_Drone_Propulsion_Sys.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL6013_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL6013_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL7015_VTOL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL7015_VTOL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL8015_VTOL_Propulsion_Kit_사양_데이.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL8015_VTOL_Propulsion_Kit_사양_데이.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL8018_VTOL_Propulsion_System_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL8018_VTOL_Propulsion_System_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL8020_VTOL_Propulsion_System_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL8020_VTOL_Propulsion_System_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_VL8022_VTOL_Propulsion_System_사양.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_VL8022_VTOL_Propulsion_System_사양.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_X-A16L-24S_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_X-A16L-24S_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_XU10-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_XU10-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_XU8-X_Modular_Propulsion_System_.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_XU8-X_Modular_Propulsion_System_.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_XU8XL-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_XU8XL-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "T-MOTOR_XU8XXL-X_사양_데이터시트.md",
+    "relative_path": "02_모터_구동계/T-MOTOR_XU8XXL-X_사양_데이터시트.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "TMotor_P80_III_Spec.md",
+    "relative_path": "02_모터_구동계/TMotor_P80_III_Spec.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "02_모터_구동계",
+    "filename": "_목록.md",
+    "relative_path": "02_모터_구동계/_목록.md",
+    "topics": [
+      "모터",
+      "motor",
+      "추력",
+      "thrust",
+      "kv",
+      "bldc",
+      "x6 plus",
+      "t-motor",
+      "소비전력",
+      "정격전압"
+    ]
+  },
+  {
+    "category": "03_변속기_ESC",
+    "filename": "Hobbywing_XRotor-40A_manual.pdf",
+    "relative_path": "03_변속기_ESC/Hobbywing_XRotor-40A_manual.pdf",
+    "topics": [
+      "변속기",
+      "esc",
+      "dshot",
+      "blheli",
+      "am32",
+      "전류 제한",
+      "pwm"
+    ]
+  },
+  {
+    "category": "03_변속기_ESC",
+    "filename": "Hobbywing_XRotor-Pro-H110A-14S-FOC_manual.pdf",
+    "relative_path": "03_변속기_ESC/Hobbywing_XRotor-Pro-H110A-14S-FOC_manual.pdf",
+    "topics": [
+      "변속기",
+      "esc",
+      "dshot",
+      "blheli",
+      "am32",
+      "전류 제한",
+      "pwm"
+    ]
+  },
+  {
+    "category": "03_변속기_ESC",
+    "filename": "Hobbywing_XRotor-Pro-H60A-6S-FOC_manual.pdf",
+    "relative_path": "03_변속기_ESC/Hobbywing_XRotor-Pro-H60A-6S-FOC_manual.pdf",
+    "topics": [
+      "변속기",
+      "esc",
+      "dshot",
+      "blheli",
+      "am32",
+      "전류 제한",
+      "pwm"
+    ]
+  },
+  {
+    "category": "03_변속기_ESC",
+    "filename": "_목록.md",
+    "relative_path": "03_변속기_ESC/_목록.md",
+    "topics": [
+      "변속기",
+      "esc",
+      "dshot",
+      "blheli",
+      "am32",
+      "전류 제한",
+      "pwm"
+    ]
+  },
+  {
+    "category": "04_프로펠러_공력",
+    "filename": "Hobbywing_MFP-24x8_specification.pdf",
+    "relative_path": "04_프로펠러_공력/Hobbywing_MFP-24x8_specification.pdf",
+    "topics": [
+      "프로펠러",
+      "프롭",
+      "propeller",
+      "피치",
+      "인치",
+      "블레이드",
+      "공력"
+    ]
+  },
+  {
+    "category": "04_프로펠러_공력",
+    "filename": "Hobbywing_MSC-16x5-4_specification.pdf",
+    "relative_path": "04_프로펠러_공력/Hobbywing_MSC-16x5-4_specification.pdf",
+    "topics": [
+      "프로펠러",
+      "프롭",
+      "propeller",
+      "피치",
+      "인치",
+      "블레이드",
+      "공력"
+    ]
+  },
+  {
+    "category": "04_프로펠러_공력",
+    "filename": "_목록.md",
+    "relative_path": "04_프로펠러_공력/_목록.md",
+    "topics": [
+      "프로펠러",
+      "프롭",
+      "propeller",
+      "피치",
+      "인치",
+      "블레이드",
+      "공력"
+    ]
+  },
+  {
+    "category": "05_전원_배터리_PDB",
+    "filename": "Gens-ace_LiPo-battery_manual.pdf",
+    "relative_path": "05_전원_배터리_PDB/Gens-ace_LiPo-battery_manual.pdf",
+    "topics": [
+      "배터리",
+      "battery",
+      "lipo",
+      "pdb",
+      "전압",
+      "pmu",
+      "전원",
+      "bec",
+      "강하",
+      "용량"
+    ]
+  },
+  {
+    "category": "05_전원_배터리_PDB",
+    "filename": "Grepow_Tattu-Plus-smart-battery_user-guide.pdf",
+    "relative_path": "05_전원_배터리_PDB/Grepow_Tattu-Plus-smart-battery_user-guide.pdf",
+    "topics": [
+      "배터리",
+      "battery",
+      "lipo",
+      "pdb",
+      "전압",
+      "pmu",
+      "전원",
+      "bec",
+      "강하",
+      "용량"
+    ]
+  },
+  {
+    "category": "05_전원_배터리_PDB",
+    "filename": "Grepow_Tattu-UAV-battery_catalog.pdf",
+    "relative_path": "05_전원_배터리_PDB/Grepow_Tattu-UAV-battery_catalog.pdf",
+    "topics": [
+      "배터리",
+      "battery",
+      "lipo",
+      "pdb",
+      "전압",
+      "pmu",
+      "전원",
+      "bec",
+      "강하",
+      "용량"
+    ]
+  },
+  {
+    "category": "05_전원_배터리_PDB",
+    "filename": "_목록.md",
+    "relative_path": "05_전원_배터리_PDB/_목록.md",
+    "topics": [
+      "배터리",
+      "battery",
+      "lipo",
+      "pdb",
+      "전압",
+      "pmu",
+      "전원",
+      "bec",
+      "강하",
+      "용량"
+    ]
+  },
+  {
+    "category": "06_센서_항법장치",
+    "filename": "Bitcraze_Loco-Positioning-Deck_datasheet.pdf",
+    "relative_path": "06_센서_항법장치/Bitcraze_Loco-Positioning-Deck_datasheet.pdf",
+    "topics": [
+      "gps",
+      "gnss",
+      "나침반",
+      "compass",
+      "기압계",
+      "baro",
+      "imu",
+      "realsense",
+      "캘리브레이션"
+    ]
+  },
+  {
+    "category": "06_센서_항법장치",
+    "filename": "Intel_RealSense-D400-series_datasheet.pdf",
+    "relative_path": "06_센서_항법장치/Intel_RealSense-D400-series_datasheet.pdf",
+    "topics": [
+      "gps",
+      "gnss",
+      "나침반",
+      "compass",
+      "기압계",
+      "baro",
+      "imu",
+      "realsense",
+      "캘리브레이션"
+    ]
+  },
+  {
+    "category": "06_센서_항법장치",
+    "filename": "_목록.md",
+    "relative_path": "06_센서_항법장치/_목록.md",
+    "topics": [
+      "gps",
+      "gnss",
+      "나침반",
+      "compass",
+      "기압계",
+      "baro",
+      "imu",
+      "realsense",
+      "캘리브레이션"
+    ]
+  },
+  {
+    "category": "07_조종_데이터링크",
+    "filename": "Align_A13-HERA1301T_manual.pdf",
+    "relative_path": "07_조종_데이터링크/Align_A13-HERA1301T_manual.pdf",
+    "topics": [
+      "수신기",
+      "송신기",
+      "조종기",
+      "telemetry",
+      "elrs",
+      "crossfire",
+      "sbus",
+      "mavlink"
+    ]
+  },
+  {
+    "category": "07_조종_데이터링크",
+    "filename": "Geraci_2022_UAV-cellular-5G-to-6G_paper.pdf",
+    "relative_path": "07_조종_데이터링크/Geraci_2022_UAV-cellular-5G-to-6G_paper.pdf",
+    "topics": [
+      "수신기",
+      "송신기",
+      "조종기",
+      "telemetry",
+      "elrs",
+      "crossfire",
+      "sbus",
+      "mavlink"
+    ]
+  },
+  {
+    "category": "07_조종_데이터링크",
+    "filename": "SIYI_MK15_user-manual.pdf",
+    "relative_path": "07_조종_데이터링크/SIYI_MK15_user-manual.pdf",
+    "topics": [
+      "수신기",
+      "송신기",
+      "조종기",
+      "telemetry",
+      "elrs",
+      "crossfire",
+      "sbus",
+      "mavlink"
+    ]
+  },
+  {
+    "category": "07_조종_데이터링크",
+    "filename": "SIYI_UniRC-7_user-manual.pdf",
+    "relative_path": "07_조종_데이터링크/SIYI_UniRC-7_user-manual.pdf",
+    "topics": [
+      "수신기",
+      "송신기",
+      "조종기",
+      "telemetry",
+      "elrs",
+      "crossfire",
+      "sbus",
+      "mavlink"
+    ]
+  },
+  {
+    "category": "07_조종_데이터링크",
+    "filename": "_목록.md",
+    "relative_path": "07_조종_데이터링크/_목록.md",
+    "topics": [
+      "수신기",
+      "송신기",
+      "조종기",
+      "telemetry",
+      "elrs",
+      "crossfire",
+      "sbus",
+      "mavlink"
+    ]
+  },
+  {
+    "category": "08_영상_FPV_짐벌",
+    "filename": "_목록.md",
+    "relative_path": "08_영상_FPV_짐벌/_목록.md",
+    "topics": [
+      "vtx",
+      "vrx",
+      "카메라",
+      "camera",
+      "짐벌",
+      "gimbal",
+      "영상송수신"
+    ]
+  },
+  {
+    "category": "09_프레임_페이로드",
+    "filename": "DJI_Lito-X1_user-manual_en.pdf",
+    "relative_path": "09_프레임_페이로드/DJI_Lito-X1_user-manual_en.pdf",
+    "topics": [
+      "프레임",
+      "frame",
+      "페이로드",
+      "payload",
+      "카본",
+      "휠베이스",
+      "마운트"
+    ]
+  },
+  {
+    "category": "09_프레임_페이로드",
+    "filename": "DJI_Lito-X1_user-manual_ko.pdf",
+    "relative_path": "09_프레임_페이로드/DJI_Lito-X1_user-manual_ko.pdf",
+    "topics": [
+      "프레임",
+      "frame",
+      "페이로드",
+      "payload",
+      "카본",
+      "휠베이스",
+      "마운트"
+    ]
+  },
+  {
+    "category": "09_프레임_페이로드",
+    "filename": "NearthLab_KAiDEN_datasheet.pdf",
+    "relative_path": "09_프레임_페이로드/NearthLab_KAiDEN_datasheet.pdf",
+    "topics": [
+      "프레임",
+      "frame",
+      "페이로드",
+      "payload",
+      "카본",
+      "휠베이스",
+      "마운트"
+    ]
+  },
+  {
+    "category": "09_프레임_페이로드",
+    "filename": "_목록.md",
+    "relative_path": "09_프레임_페이로드/_목록.md",
+    "topics": [
+      "프레임",
+      "frame",
+      "페이로드",
+      "payload",
+      "카본",
+      "휠베이스",
+      "마운트"
+    ]
+  },
+  {
+    "category": "10_안전_비행규정",
+    "filename": "KIAST_ultralight-registration-safety-certification_guide.pdf",
+    "relative_path": "10_안전_비행규정/KIAST_ultralight-registration-safety-certification_guide.pdf",
+    "topics": [
+      "안전",
+      "규정",
+      "항공안전법",
+      "체크리스트",
+      "사고예방",
+      "비행고도"
+    ]
+  },
+  {
+    "category": "10_안전_비행규정",
+    "filename": "_목록.md",
+    "relative_path": "10_안전_비행규정/_목록.md",
+    "topics": [
+      "안전",
+      "규정",
+      "항공안전법",
+      "체크리스트",
+      "사고예방",
+      "비행고도"
+    ]
+  },
+  {
+    "category": "11_온보드컴퓨터_임베디드",
+    "filename": "Radxa_Dragon-Q8B_product-brief.pdf",
+    "relative_path": "11_온보드컴퓨터_임베디드/Radxa_Dragon-Q8B_product-brief.pdf",
+    "topics": [
+      "jetson",
+      "젯슨",
+      "orin",
+      "nano",
+      "온보드",
+      "companion",
+      "cuda",
+      "uart"
+    ]
+  },
+  {
+    "category": "11_온보드컴퓨터_임베디드",
+    "filename": "Raspberry-Pi_5_product-brief.pdf",
+    "relative_path": "11_온보드컴퓨터_임베디드/Raspberry-Pi_5_product-brief.pdf",
+    "topics": [
+      "jetson",
+      "젯슨",
+      "orin",
+      "nano",
+      "온보드",
+      "companion",
+      "cuda",
+      "uart"
+    ]
+  },
+  {
+    "category": "11_온보드컴퓨터_임베디드",
+    "filename": "_목록.md",
+    "relative_path": "11_온보드컴퓨터_임베디드/_목록.md",
+    "topics": [
+      "jetson",
+      "젯슨",
+      "orin",
+      "nano",
+      "온보드",
+      "companion",
+      "cuda",
+      "uart"
+    ]
+  },
+  {
+    "category": "12_미들웨어_통신_ROS",
+    "filename": "Abdulhae_2022_FANET-cluster-routing_paper.pdf",
+    "relative_path": "12_미들웨어_통신_ROS/Abdulhae_2022_FANET-cluster-routing_paper.pdf",
+    "topics": [
+      "ros",
+      "ros2",
+      "micro-xrce-dds",
+      "mavros",
+      "토픽",
+      "topic",
+      "노드"
+    ]
+  },
+  {
+    "category": "12_미들웨어_통신_ROS",
+    "filename": "Aerostack2_2023_framework_paper.pdf",
+    "relative_path": "12_미들웨어_통신_ROS/Aerostack2_2023_framework_paper.pdf",
+    "topics": [
+      "ros",
+      "ros2",
+      "micro-xrce-dds",
+      "mavros",
+      "토픽",
+      "topic",
+      "노드"
+    ]
+  },
+  {
+    "category": "12_미들웨어_통신_ROS",
+    "filename": "DSTL_SAPIENT_interface-control-document-v7.pdf",
+    "relative_path": "12_미들웨어_통신_ROS/DSTL_SAPIENT_interface-control-document-v7.pdf",
+    "topics": [
+      "ros",
+      "ros2",
+      "micro-xrce-dds",
+      "mavros",
+      "토픽",
+      "topic",
+      "노드"
+    ]
+  },
+  {
+    "category": "12_미들웨어_통신_ROS",
+    "filename": "Kaiser_2022_ROS2swarm_paper.pdf",
+    "relative_path": "12_미들웨어_통신_ROS/Kaiser_2022_ROS2swarm_paper.pdf",
+    "topics": [
+      "ros",
+      "ros2",
+      "micro-xrce-dds",
+      "mavros",
+      "토픽",
+      "topic",
+      "노드"
+    ]
+  },
+  {
+    "category": "12_미들웨어_통신_ROS",
+    "filename": "Tsao_2022_UAV-FANET-cyber-security-survey_paper.pdf",
+    "relative_path": "12_미들웨어_통신_ROS/Tsao_2022_UAV-FANET-cyber-security-survey_paper.pdf",
+    "topics": [
+      "ros",
+      "ros2",
+      "micro-xrce-dds",
+      "mavros",
+      "토픽",
+      "topic",
+      "노드"
+    ]
+  },
+  {
+    "category": "12_미들웨어_통신_ROS",
+    "filename": "Vasylyshyn_2024_drone-swarm-Solana-blockchain_paper.pdf",
+    "relative_path": "12_미들웨어_통신_ROS/Vasylyshyn_2024_drone-swarm-Solana-blockchain_paper.pdf",
+    "topics": [
+      "ros",
+      "ros2",
+      "micro-xrce-dds",
+      "mavros",
+      "토픽",
+      "topic",
+      "노드"
+    ]
+  },
+  {
+    "category": "12_미들웨어_통신_ROS",
+    "filename": "_목록.md",
+    "relative_path": "12_미들웨어_통신_ROS/_목록.md",
+    "topics": [
+      "ros",
+      "ros2",
+      "micro-xrce-dds",
+      "mavros",
+      "토픽",
+      "topic",
+      "노드"
+    ]
+  },
+  {
+    "category": "13_컴퓨터비전_AI_YOLO",
+    "filename": "Sapkota_2025_YOLO26-architecture-benchmark_paper.pdf",
+    "relative_path": "13_컴퓨터비전_AI_YOLO/Sapkota_2025_YOLO26-architecture-benchmark_paper.pdf",
+    "topics": [
+      "yolo",
+      "욜로",
+      "tensorrt",
+      "opencv",
+      "객체인식",
+      "onnx",
+      "트래킹"
+    ]
+  },
+  {
+    "category": "13_컴퓨터비전_AI_YOLO",
+    "filename": "_목록.md",
+    "relative_path": "13_컴퓨터비전_AI_YOLO/_목록.md",
+    "topics": [
+      "yolo",
+      "욜로",
+      "tensorrt",
+      "opencv",
+      "객체인식",
+      "onnx",
+      "트래킹"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "Brust_2021_swarm-based-counter-UAV-defense_paper.pdf",
+    "relative_path": "14_SLAM_경로계획_내비/Brust_2021_swarm-based-counter-UAV-defense_paper.pdf",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "Dorigo_2021_swarm-robotics-past-present-future_paper.pdf",
+    "relative_path": "14_SLAM_경로계획_내비/Dorigo_2021_swarm-robotics-past-present-future_paper.pdf",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "Li_2025_AirSwarm-COTS-multi-UAV_paper.pdf",
+    "relative_path": "14_SLAM_경로계획_내비/Li_2025_AirSwarm-COTS-multi-UAV_paper.pdf",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "Shakhatreh_2019_UAV-civil-applications-survey_paper.pdf",
+    "relative_path": "14_SLAM_경로계획_내비/Shakhatreh_2019_UAV-civil-applications-survey_paper.pdf",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "Shan_2021_UWB-swarm-ranging_INFOCOM_paper.pdf",
+    "relative_path": "14_SLAM_경로계획_내비/Shan_2021_UWB-swarm-ranging_INFOCOM_paper.pdf",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "Teng_2020_multi-UAV-surveillance-trajectory-PSO_paper.pdf",
+    "relative_path": "14_SLAM_경로계획_내비/Teng_2020_multi-UAV-surveillance-trajectory-PSO_paper.pdf",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "Wang_2021_MADRL-multi-UAV-MEC-trajectory_paper.pdf",
+    "relative_path": "14_SLAM_경로계획_내비/Wang_2021_MADRL-multi-UAV-MEC-trajectory_paper.pdf",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  },
+  {
+    "category": "14_SLAM_경로계획_내비",
+    "filename": "_목록.md",
+    "relative_path": "14_SLAM_경로계획_내비/_목록.md",
+    "topics": [
+      "slam",
+      "슬램",
+      "nav2",
+      "경로계획",
+      "자율비행",
+      "회피",
+      "웨이포인트"
+    ]
+  }
+]
