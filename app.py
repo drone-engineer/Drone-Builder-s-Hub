@@ -485,7 +485,7 @@ def retrieve_manual_docs(query: str, cat_filter: str = "전체", k: int = 3):
                         "category": c_name,
                         "source_file": d.metadata.get("source_file", "manual.pdf"),
                         "path": d.metadata.get("file_path", ""),
-                        "content": d.page_content[:250],
+                        "content": d.page_content[:500],
                         "page": d.metadata.get("page", 1)
                     })
             except Exception:
@@ -595,10 +595,10 @@ if user_prompt:
 (웹 검색을 통해 파악된 시판 제품 스펙 및 최신 동향 요약)"""
 
                 try:
-                    res = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": compare_prompt}], max_completion_tokens=1500, timeout=35.0)
+                    res = client.chat.completions.create(model=MODEL, messages=[{"role": "user", "content": compare_prompt}], max_completion_tokens=2500, timeout=35.0)
                     raw = res.choices[0].message.content or ""
                 except Exception:
-                    res = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role": "user", "content": compare_prompt}], max_tokens=1200, timeout=30.0)
+                    res = client.chat.completions.create(model="gpt-4o-mini", messages=[{"role": "user", "content": compare_prompt}], max_tokens=2000, timeout=30.0)
                     raw = res.choices[0].message.content or ""
 
                 p_ana = raw.split("===ANALYSIS===")[-1].split("===MANUAL===")[0].strip() if "===ANALYSIS===" in raw else raw
@@ -626,9 +626,12 @@ if user_prompt:
 [로컬 매뉴얼 및 기술 규격 근거 자료]
 {ctx}
 
-[반드시 준수할 출력 지침]
-1. 당신의 페르소나 톤앤매너에 맞추어, 위 근거 자료의 실제 수치(추력 g/kg, 전압 V, 전류 A, 효율 g/W), 배선 핀맵, 규정 조항을 상세하고 체계적으로 서술하십시오.
-2. 서론이나 추상적인 인사말은 생략하고, 마크다운 소제목(###)과 불릿 항목으로 작성하십시오.
+[반드시 준수할 출력 지침 - 상세 답변 모드]
+1. 단순 요약에 그치지 말고, 실제 현장에서 즉시 적용 가능한 깊이 있는 전문 기술 보고서 형태로 작성하십시오.
+2. 반드시 아래 구조를 갖추어 풍부하게 설명하십시오:
+   - ### 1. 주요 파라미터 및 핵심 규격 요약 (파라미터명, 기본값, 권장 세팅 범위, 단위가 포함된 마크다운 표 제공)
+   - ### 2. 상세 설정 절차 및 실무 가이드 (QGC 경로, MAVLink 콘솔 또는 리눅스 터미널 명령어 코드블록 포함)
+   - ### 3. 현장 운용 안전 수칙 및 엔지니어링 팁 (전압 강하, 페일세이프 트리거, 결선 시 유의사항 등)
 3. 답변 맨 마지막에는 반드시 아래 형식으로 참조 쪽수 요약을 넣으십시오:
 ---
 📌 **참조 매뉴얼 및 인용 근거:**
@@ -638,7 +641,7 @@ if user_prompt:
                     res = client.chat.completions.create(
                         model=MODEL,
                         messages=[{"role": "user", "content": integrated_prompt}],
-                        max_completion_tokens=1500,
+                        max_completion_tokens=2500,
                         timeout=35.0
                     )
                     final_ans = res.choices[0].message.content or ""
@@ -649,7 +652,7 @@ if user_prompt:
                         res_fb = client.chat.completions.create(
                             model="gpt-4o-mini",
                             messages=[{"role": "user", "content": integrated_prompt}],
-                            max_tokens=1200,
+                            max_tokens=2000,
                             timeout=30.0
                         )
                         final_ans = res_fb.choices[0].message.content
