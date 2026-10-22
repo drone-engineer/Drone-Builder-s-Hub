@@ -1,3 +1,41 @@
+# --- [복합 항공 기상 정밀 관제 엔진] ---
+def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
+    url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_gusts_10m&hourly=wind_speed_10m,wind_speed_40m,wind_speed_80m,wind_speed_120m,wind_speed_180m,precipitation_probability&forecast_days=1&timezone=Asia%2FSeoul"
+    try:
+        res = requests.get(url, timeout=5.0).json()
+        current = res.get("current", {})
+        hourly = res.get("hourly", {})
+
+        temp = current.get("temperature_2m", 15.0)
+        gust = current.get("wind_gusts_10m", 0.0)
+        rain_prob = hourly.get("precipitation_probability", [0])[0]
+
+        alt_winds = {
+            10: current.get("wind_speed_10m", 0.0),
+            40: hourly.get("wind_speed_40m", [current.get("wind_speed_10m", 0.0)])[0],
+            80: hourly.get("wind_speed_80m", [current.get("wind_speed_10m", 0.0)])[0],
+            120: hourly.get("wind_speed_120m", [current.get("wind_speed_10m", 0.0)])[0],
+            180: hourly.get("wind_speed_180m", [current.get("wind_speed_10m", 0.0)])[0],
+        }
+
+        selected_wind = alt_winds.get(target_alt, alt_winds[80])
+
+        risks = []
+        if selected_wind >= 10.0 or gust >= 13.0:
+            risks.append(f"🚨 [강풍 위험] 상공 {target_alt}m 풍속({selected_wind}m/s) 또는 돌풍({gust}m/s) 한계 초과")
+        if temp <= 0.0:
+            risks.append("❄️ [저온 주의] LiPo 배터리 급격한 전압 강하 위험 (보온 필수)")
+        if rain_prob >= 40:
+            risks.append("🌧️ [강수 위험] ESC 및 전장 단락(쇼트) 방지를 위한 비행 중지 권고")
+
+        status = "안전" if not risks else ("주의" if len(risks) == 1 else "비행 금지")
+        return {
+            "status": status, "temp": temp, "wind": selected_wind, "alt_winds": alt_winds,
+            "gust": gust, "rain_prob": rain_prob, "risks": risks
+        }
+    except Exception:
+        return None
+
 import os
 import io
 import json
@@ -205,27 +243,46 @@ with st.sidebar:
             else:
                 st.warning("URL을 입력해 주세요.")
 
-    # 4. 실시간 비행 기상 관제
+    # 4. [완전 복원] 실시간 비행 기상 관제
     with st.expander("🌦️ 실시간 비행 기상 관제 (클릭하여 열기)", expanded=False):
-        sel_loc = st.selectbox("관제 지역", ["서울특별시 (광나루)", "경기도 이천시", "경기도 성남시 (판교)", "경기도 화성시", "강원도 영월군"])
-        coords = {"lat": 37.5502, "lon": 127.1215}
-        try:
-            wx_res = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={coords['lat']}&longitude={coords['lon']}&current=temperature_2m,wind_speed_10m&hourly=wind_speed_80m,wind_speed_120m&timezone=Asia%2FSeoul", timeout=4.0).json()
-            curr = wx_res.get("current", {})
-            hourly = wx_res.get("hourly", {})
-            w10 = curr.get("wind_speed_10m", 0.0)
-            w80 = hourly.get("wind_speed_80m", [w10])[0]
-            w120 = hourly.get("wind_speed_120m", [w80])[0]
-            col_w1, col_w2 = st.columns(2)
-            col_w1.metric("지상 10m 풍속", f"{w10} m/s")
-            col_w2.metric("상공 120m 풍속", f"{w120} m/s")
-            if max(w10, w80, w120) >= 10.0:
-                st.error("🚨 비행 위험 (강풍)")
-            else:
-                st.success("✅ 비행 적합")
-        except Exception:
-            st.caption("기상 관제 서버 대기 중...")
+        loc_coords = {
+            "서울특별시 (광나루)": (37.5502, 127.1215),
+            "경기도 이천시": (37.2723, 127.4350),
+            "경기도 성남시 (판교)": (37.4020, 127.1086),
+            "경기도 화성시 (드론비행장)": (37.1995, 126.8315),
+            "강원도 영월군 (드론전용공역)": (37.1833, 128.4619)
+        }
+        sel_loc = st.selectbox("관제 지역 선택", list(loc_coords.keys()), index=0)
+        c_lat, c_lon = loc_coords[sel_loc]
 
+        selected_alt = st.selectbox(
+            "비행 관제 고도",
+            [10, 40, 80, 120, 180],
+            index=2,
+            format_func=lambda x: f"지표면 10m (이착륙)" if x==10 else (f"상공 {x}m (법정 최고한계)" if x==120 else f"상공 {x}m")
+        )
+
+        wx = get_weather_safety(c_lat, c_lon, target_alt=selected_alt)
+        if wx:
+            status_badge = {"안전": "🟢 **비행 안전**", "주의": "🟡 **비행 주의**", "비행 금지": "🔴 **비행 금지**"}.get(wx["status"], "⚪ 비행 대기")
+            st.markdown(f"#### {status_badge}")
+
+            # 4대 핵심 기상 메트릭 2x2 그리드
+            col_m1, col_m2 = st.columns(2)
+            col_m1.metric("현재 기온", f"{wx['temp']} °C")
+            col_m2.metric(f"상공 {selected_alt}m 풍속", f"{wx['wind']} m/s")
+
+            col_m3, col_m4 = st.columns(2)
+            col_m3.metric("최대 순간 돌풍", f"{wx['gust']} m/s")
+            col_m4.metric("강수 확률", f"{wx['rain_prob']} %")
+
+            if wx["risks"]:
+                for r in wx["risks"]:
+                    st.warning(r)
+            else:
+                st.success("✅ 돌풍, 기온, 강수 종합 기준 비행 적합 상태입니다.")
+        else:
+            st.caption("기상 관제 서버 연결 대기 중...")
     st.markdown("---")
 
     # 5. 3개 시트 엑셀 다운로드
