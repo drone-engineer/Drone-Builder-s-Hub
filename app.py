@@ -121,7 +121,6 @@ def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
         danger_risks = []
         warning_risks = []
 
-        # 풍속 판정 기준 완전 일치 (10.0m/s 이상 위험, 7.0m/s 이상 주의)
         if selected_wind >= 10.0 or gust >= 13.0:
             danger_risks.append(f"🚨 [강풍 위험] 상공 {target_alt}m 풍속({selected_wind}m/s) 또는 돌풍({gust}m/s) 한계 초과")
         elif selected_wind >= 7.0 or gust >= 10.0:
@@ -528,17 +527,23 @@ def determine_route(query: str, selected_mode: str):
 st.title("🛸 드론 빌더스 허브 (Drone Builder's Hub)")
 st.caption(f"자율비행 드론 HW/SW 14개 계통 매뉴얼 RAG & 항공 안전 관제 포털 (엔진: {MODEL})")
 
-for msg in st.session_state["chat_history"]:
+# 과거 대화 출력 (중복 key 완전 방어: msg_idx와 f_idx 결합)
+for msg_idx, msg in enumerate(st.session_state["chat_history"]):
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
         if msg.get("files"):
             with st.expander(f"📄 참조 매뉴얼 ({len(msg['files'])}건)", expanded=False):
-                for f in msg["files"]:
+                for f_idx, f in enumerate(msg["files"]):
                     p = Path(f["path"])
                     col_t, col_b = st.columns([4, 1])
                     col_t.markdown(f"• **[{f['category']}]** `{f['source_file']}` (p.{f['page']})")
                     if p.exists():
-                        col_b.download_button("⬇️ 다운로드", data=p.read_bytes(), file_name=f["source_file"], key=f"hist_{f['source_file']}_{f['page']}")
+                        col_b.download_button(
+                            "⬇️ 다운로드",
+                            data=p.read_bytes(),
+                            file_name=f["source_file"],
+                            key=f"hist_btn_{msg_idx}_{f_idx}_{f['source_file']}"
+                        )
 
 preset_q = st.session_state.pop("preset_query", None)
 user_prompt = st.chat_input("하드웨어 배선, ROS 2 통신, YOLO 또는 비행 규정을 질문하세요...") or preset_q
@@ -654,14 +659,15 @@ if user_prompt:
                 st.markdown(final_ans)
 
         # 점검표 생성 버튼
-        if st.button("📋 이 작업의 비행 전 안전 체크리스트(Checklist) 생성", key=f"btn_chk_{datetime.now().strftime('%f')}"):
+        cur_time_str = datetime.now().strftime("%H%M%S%f")
+        if st.button("📋 이 작업의 비행 전 안전 체크리스트(Checklist) 생성", key=f"btn_chk_{cur_time_str}"):
             st.markdown("##### 📋 현장 비행 전 안전 점검표 (Pre-flight Checklist)")
             st.markdown("- [ ] **조종기/기체 배터리 전압 및 셀 밸런스 정상 확인**")
             st.markdown("- [ ] **모터 회전 방향 및 프로펠러 체결 잠금 너트 토크 확인**")
             st.markdown("- [ ] **드론원스톱 비행승인/촬영허가 공문 및 지자체 관제권 확인**")
             st.markdown("- [ ] **페일세이프(RTL 자동 복귀 고도) 최소 30m 이상 설정 점검**")
 
-        # 인용된 원본 매뉴얼 다운로드 카드
+        # 실시간 응답 블록의 다운로드 버튼 (고유 key 보장)
         if manual_docs:
             st.markdown("##### 📥 인용된 원본 매뉴얼 다운로드")
             with st.expander(f"📄 매뉴얼 목록 ({len(manual_docs)}건)", expanded=True):
@@ -671,7 +677,12 @@ if user_prompt:
                     col_t, col_b = st.columns([4, 1])
                     col_t.markdown(f"• **[{doc['category']}]** `{fname}` (p.{doc['page']})")
                     if fpath.exists():
-                        col_b.download_button("⬇️ 다운로드", data=fpath.read_bytes(), file_name=fname, key=f"live_{idx}_{fname}")
+                        col_b.download_button(
+                            "⬇️ 다운로드",
+                            data=fpath.read_bytes(),
+                            file_name=fname,
+                            key=f"live_btn_{idx}_{fname}_{cur_time_str}"
+                        )
 
         st.session_state["chat_history"].append({"role": "assistant", "content": final_ans, "files": manual_docs})
         st.session_state["query_logs"].append({
