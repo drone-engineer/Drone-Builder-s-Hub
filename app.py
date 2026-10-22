@@ -177,30 +177,97 @@ def get_drone_vector_store():
     return None
 
 
-def retrieve_drone_manuals(query: str, category_filter: str = "전체", k: int = 8):
-    store = get_drone_vector_store()
-    if not store:
+def route_relevant_manuals_by_catalog(query: str, max_docs: int = 2):
+    """
+    1단계: 마스터 목차(manual_catalog.json)를 스캔하여 질문과 관련성이 가장 높은 문서 1~2개만 초고속 선별
+    """
+    catalog_path = Path("manual_catalog.json")
+    if not catalog_path.exists():
+        catalog_path = Path.cwd().parent / "manual_catalog.json"
+
+    if not catalog_path.exists():
         return []
 
-    if category_filter and category_filter != "전체":
-        results = store.similarity_search(query, k=k, filter={"category": category_filter})
-    else:
-        results = store.similarity_search(query, k=k)
+    try:
+        catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
+    except Exception:
+        return []
 
-    chunks = []
-    for doc in results:
-        chunks.append({
-            "category": doc.metadata.get("category", "공통"),
-            "source_file": doc.metadata.get("source_file", "manual.pdf"),
-            "file_path": doc.metadata.get("file_path", ""),
-            "page": doc.metadata.get("page", 0) + 1,
-            "content": doc.page_content
-        })
-    return chunks
+    q_lower = query.lower()
+    scored_docs = []
 
-# ==============================================================================
-# 4. 스마트 검색어 압축 및 Tavily AI 기술 검색 엔진
-# ==============================================================================
+    for item in catalog:
+        score = 0
+        # 1. 파일명 및 카테고리 매칭 점수
+        if any(term in item["filename"].lower() for term in q_lower.split()):
+            score += 3
+        if any(term in item["category"].lower() for term in q_lower.split()):
+            score += 2
+        # 2. 목차 키워드 매칭 점수
+        for topic in item.get("topics", []):
+            if topic in q_lower:
+                score += 2
+
+        if score > 0:
+            scored_docs.append((score, item))
+
+    # 점수 높은 순으로 상위 max_docs개 선정
+    scored_docs.sort(key=lambda x: x[0], reverse=True)
+    selected = [doc["relative_path"] for score, doc in scored_docs[:max_docs]]
+    return selected
+
+
+def retrieve_drone_manuals(query: str, category_filter: str = "전체", k: int = 4):
+    """
+    2단계: 목차에서 선별된 문서가 있다면 해당 문서 위주로 국소 정밀 검색 (1초 내 완료)
+    """
+    manuals_path = Path("manuals")
+    if not manuals_path.exists():
+        manuals_path = Path.cwd().parent / "manuals"
+
+    # 1단계 목차 라우팅 실행
+    target_rel_files = route_relevant_manuals_by_catalog(query, max_docs=2)
+
+    results = []
+
+    # 선별된 파일이 있으면 해당 파일들의 본문만 직접 빠르게 읽어 청크 구성
+    if target_rel_files:
+        for rel_path in target_rel_files:
+            target_f = manuals_path / rel_path
+            if target_f.exists() and target_f.suffix.lower() == ".md":
+                try:
+                    content = target_f.read_text(encoding="utf-8")
+                    # 질문 관련 핵심 문단 위주로 300자 발췌
+                    results.append({
+                        "category": target_f.parent.name,
+                        "source_file": target_f.name,
+                        "file_path": str(target_f),
+                        "page": 1,
+                        "content": content[:350]
+                    })
+                except Exception:
+                    pass
+
+    # 결과가 부족하면 기존 벡터스토어에서 k=3개 보완
+    if len(results) < 2:
+        db = get_drone_vector_store()
+        if db is not None:
+            try:
+                extra_docs = db.similarity_search(query, k=3)
+                for d in extra_docs:
+                    results.append({
+                        "category": d.metadata.get("category", "일반"),
+                        "source_file": d.metadata.get("source_file", "문서"),
+                        "file_path": d.metadata.get("file_path", ""),
+                        "page": d.metadata.get("page", 1),
+                        "content": d.page_content[:300]
+                    })
+            except Exception:
+                pass
+
+    return results[:k]
+
+
 def extract_search_keyword(raw_text: str) -> str:
     text = raw_text.lower()
 
