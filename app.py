@@ -1,6 +1,37 @@
-# ==============================================================================
-# 국내 대표 드론 거점 및 상세 도로명/지번 지원 하이브리드 지오코딩 엔진
-# ==============================================================================
+import os
+import io
+import json
+import base64
+from datetime import datetime
+from pathlib import Path
+from dotenv import load_dotenv
+import requests
+import pandas as pd
+import streamlit as st
+from openai import OpenAI
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+
+# --- [기본 환경 설정] ---
+st.set_page_config(page_title="드론 빌더스 허브", page_icon="🛸", layout="wide")
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "").strip()
+MODEL = os.getenv("OPENAI_MODEL", "gpt-6-luna").strip()
+
+if not OPENAI_API_KEY:
+    st.error("⚠️ .env 파일에 OPENAI_API_KEY가 설정되어 있지 않습니다.")
+    st.stop()
+
+client = OpenAI(api_key=OPENAI_API_KEY, timeout=45.0, max_retries=2)
+
+if "chat_history" not in st.session_state:
+    st.session_state["chat_history"] = []
+if "query_logs" not in st.session_state:
+    st.session_state["query_logs"] = []
+
+# --- [지오코딩 & 기상 관제 엔진] ---
 KOREA_DRONE_SPOTS = {
     "광주": {"lat": 35.1595, "lon": 126.8526, "name": "광주광역시 (드론비행공원)"},
     "광주광역시": {"lat": 35.1595, "lon": 126.8526, "name": "광주광역시 (드론비행공원)"},
@@ -34,7 +65,6 @@ def geocode_address(query_text: str):
         if key == compact_q or key in compact_q or compact_q in key:
             return val["lat"], val["lon"], val["name"]
 
-    # 1. Nominatim 도로명 주소 검색
     try:
         headers = {"User-Agent": "DroneBuildersHub_Geocoder/2.0"}
         osm_url = "https://nominatim.openstreetmap.org/search"
@@ -52,7 +82,6 @@ def geocode_address(query_text: str):
     except Exception:
         pass
 
-    # 2. Open-Meteo 지오코딩 폴백
     candidates = [raw_q, raw_q + "시", raw_q + "군", raw_q + "구"]
     geo_url = "https://geocoding-api.open-meteo.com/v1/search"
     for c in candidates:
@@ -69,7 +98,6 @@ def geocode_address(query_text: str):
             continue
     return None, None, ""
 
-# --- [복합 항공 기상 정밀 관제 엔진] ---
 def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
     url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,wind_speed_10m,wind_gusts_10m&hourly=wind_speed_10m,wind_speed_40m,wind_speed_80m,wind_speed_120m,wind_speed_180m,precipitation_probability&forecast_days=1&timezone=Asia%2FSeoul"
     try:
@@ -107,39 +135,6 @@ def get_weather_safety(lat: float, lon: float, target_alt: int = 80):
     except Exception:
         return None
 
-import os
-import io
-import json
-import base64
-from datetime import datetime
-from pathlib import Path
-from dotenv import load_dotenv
-import requests
-import pandas as pd
-import streamlit as st
-from openai import OpenAI
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
-
-# --- [기본 환경 설정] ---
-st.set_page_config(page_title="드론 빌더스 허브", page_icon="🛸", layout="wide")
-load_dotenv()
-
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "").strip()
-MODEL = os.getenv("OPENAI_MODEL", "gpt-6-luna").strip()
-
-if not OPENAI_API_KEY:
-    st.error("⚠️ .env 파일에 OPENAI_API_KEY가 설정되어 있지 않습니다.")
-    st.stop()
-
-client = OpenAI(api_key=OPENAI_API_KEY, timeout=45.0, max_retries=2)
-
-if "chat_history" not in st.session_state:
-    st.session_state["chat_history"] = []
-if "query_logs" not in st.session_state:
-    st.session_state["query_logs"] = []
-
 # --- [모터 보간 연산 함수] ---
 def interpolate_motor_benchmark(motor_name: str, target_thrust_g: float):
     bpath = Path("motor_benchmarks.json")
@@ -174,13 +169,13 @@ def interpolate_motor_benchmark(motor_name: str, target_thrust_g: float):
 
 # --- [3대 페르소나 시스템 지침] ---
 PERSONA_PROMPTS = {
-    "현장 엔지니어 (핀맵/명령어 중심)": """당신은 15년 경력의 수석 드론 하드웨어/임베디드 엔지니어입니다.
-- 불필요한 사설이나 인사말은 생략하고 실무 수치(V, A, W, g/W), 핀맵(VCC, GND, TX, RX, I2C, CAN), DShot/PWM 설정값, 터미널 실행 명령어를 중심으로 명확하게 답변하십시오.
+    "현장 엔지니어 (핀맵/명령어 중심)": """당신은 15년 경력의 현장 수석 드론 하드웨어/임베디드 엔지니어입니다.
+- 불필요한 사설은 배제하고 실무 수치(V, A, W, g/W), 핀맵(VCC, GND, TX, RX, I2C, CAN), 하드웨어 결선 주의사항, 리눅스/ROS 2 실행 명령어를 중심으로 명확하게 답변하십시오.
 - 모터 결선이나 전원 배선 질문 시 답변 최상단에 "⚡ [하드웨어 결선 주의]" 경고를 반드시 포함하십시오.""",
 
     "DIY 빌더 (기초 원리 해설)": """당신은 친절한 드론 자작(DIY) 멘토입니다.
 - 초보 제작자도 쉽게 이해할 수 있도록 기본 규격과 비행 원리를 단계별로 친절하게 설명하십시오.
-- 조립이나 비행 시 자주 하는 실수(배터리 전압강하, 무게중심, 프로펠러 체결)와 유의할 점을 알기 쉽게 안내하십시오.""",
+- 조립이나 비행 시 자주 하는 실수와 유의할 점을 알기 쉽게 안내하십시오.""",
 
     "비행 안전점검관 (규정/체크리스트)": """당신은 대한민국 항공안전법 공인 비행 안전점검관입니다.
 - 항공안전법 초경량비행장치 규정, 비행승인 및 촬영허가(드론원스톱), 최대 비행고도(150m) 기준을 엄격하게 검토하여 답변하십시오.
@@ -314,17 +309,44 @@ with st.sidebar:
             else:
                 st.warning("URL을 입력해 주세요.")
 
-    # 4. [완전 복원] 실시간 비행 기상 관제
+    # 4. [주소 엔터 검색 + 📍 GPS 연동 완전체] 실시간 비행 기상 관제
     with st.expander("🌦️ 실시간 비행 기상 관제 (클릭하여 열기)", expanded=False):
-        loc_coords = {
-            "서울특별시 (광나루)": (37.5502, 127.1215),
-            "경기도 이천시": (37.2723, 127.4350),
-            "경기도 성남시 (판교)": (37.4020, 127.1086),
-            "경기도 화성시 (드론비행장)": (37.1995, 126.8315),
-            "강원도 영월군 (드론전용공역)": (37.1833, 128.4619)
-        }
-        sel_loc = st.selectbox("관제 지역 선택", list(loc_coords.keys()), index=0)
-        c_lat, c_lon = loc_coords[sel_loc]
+        if "current_lat" not in st.session_state:
+            st.session_state["current_lat"] = 37.2723
+            st.session_state["current_lon"] = 127.4350
+            st.session_state["location_label"] = "경기도 이천시 (기본 위치)"
+
+        def on_location_enter():
+            addr = st.session_state.get("addr_input_box", "").strip()
+            if addr:
+                lat, lon, label = geocode_address(addr)
+                if lat and lon:
+                    st.session_state["current_lat"] = lat
+                    st.session_state["current_lon"] = lon
+                    st.session_state["location_label"] = label or addr
+
+        col_inp, col_gps = st.columns([4, 1])
+        with col_inp:
+            st.text_input(
+                "비행 장소 검색 (입력 후 엔터 ↵)", 
+                placeholder="지명 또는 도로명 주소 (예: 판교역로 166, 영월, 광주)",
+                key="addr_input_box",
+                on_change=on_location_enter,
+                label_visibility="collapsed"
+            )
+        with col_gps:
+            if st.button("📍", help="현재 내 GPS 위치로 즉시 재설정", use_container_width=True):
+                try:
+                    ip_info = requests.get("https://ipapi.co/json/", timeout=3.0).json()
+                    st.session_state["current_lat"] = ip_info.get("latitude", 37.2723)
+                    st.session_state["current_lon"] = ip_info.get("longitude", 127.4350)
+                    city = ip_info.get("city", "현재 위치")
+                    st.session_state["location_label"] = f"{city} (내 GPS)"
+                    st.rerun()
+                except Exception:
+                    st.warning("GPS 위치를 가져오지 못했습니다.")
+
+        st.caption(f"📍 현재 관제 지역: `{st.session_state['location_label']}`")
 
         selected_alt = st.selectbox(
             "비행 관제 고도",
@@ -333,12 +355,11 @@ with st.sidebar:
             format_func=lambda x: f"지표면 10m (이착륙)" if x==10 else (f"상공 {x}m (법정 최고한계)" if x==120 else f"상공 {x}m")
         )
 
-        wx = get_weather_safety(c_lat, c_lon, target_alt=selected_alt)
+        wx = get_weather_safety(st.session_state["current_lat"], st.session_state["current_lon"], target_alt=selected_alt)
         if wx:
             status_badge = {"안전": "🟢 **비행 안전**", "주의": "🟡 **비행 주의**", "비행 금지": "🔴 **비행 금지**"}.get(wx["status"], "⚪ 비행 대기")
             st.markdown(f"#### {status_badge}")
 
-            # 4대 핵심 기상 메트릭 2x2 그리드
             col_m1, col_m2 = st.columns(2)
             col_m1.metric("현재 기온", f"{wx['temp']} °C")
             col_m2.metric(f"상공 {selected_alt}m 풍속", f"{wx['wind']} m/s")
@@ -354,6 +375,7 @@ with st.sidebar:
                 st.success("✅ 돌풍, 기온, 강수 종합 기준 비행 적합 상태입니다.")
         else:
             st.caption("기상 관제 서버 연결 대기 중...")
+
     st.markdown("---")
 
     # 5. 3개 시트 엑셀 다운로드
