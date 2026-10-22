@@ -1,0 +1,163 @@
+{
+  "Hobbywing XRotor X6 Plus (24x8.0 프롭 / 12S 48V)": {
+    "kv": 180,
+    "max_thrust_kg": 11.8,
+    "voltage_v": 48.0,
+    "curve": [
+      {
+        "throttle": 40,
+        "thrust_g": 2400,
+        "current_a": 5.8,
+        "power_w": 278.4,
+        "eff_gw": 8.62
+      },
+      {
+        "throttle": 50,
+        "thrust_g": 3350,
+        "current_a": 8.4,
+        "power_w": 403.2,
+        "eff_gw": 8.31
+      },
+      {
+        "throttle": 60,
+        "thrust_g": 4600,
+        "current_a": 13.5,
+        "power_w": 648.0,
+        "eff_gw": 7.1
+      },
+      {
+        "throttle": 75,
+        "thrust_g": 6650,
+        "current_a": 22.8,
+        "power_w": 1094.4,
+        "eff_gw": 6.08
+      },
+      {
+        "throttle": 85,
+        "thrust_g": 8400,
+        "current_a": 31.2,
+        "power_w": 1497.6,
+        "eff_gw": 5.61
+      },
+      {
+        "throttle": 100,
+        "thrust_g": 11800,
+        "current_a": 42.5,
+        "power_w": 2040.0,
+        "eff_gw": 5.78
+      }
+    ]
+  },
+  "Hobbywing XRotor X8 (30x11 프롭 / 12S 48V)": {
+    "kv": 100,
+    "max_thrust_kg": 15.3,
+    "voltage_v": 48.0,
+    "curve": [
+      {
+        "throttle": 45,
+        "thrust_g": 4200,
+        "current_a": 10.2,
+        "power_w": 489.6,
+        "eff_gw": 8.58
+      },
+      {
+        "throttle": 52,
+        "thrust_g": 5500,
+        "current_a": 14.8,
+        "power_w": 710.4,
+        "eff_gw": 7.74
+      },
+      {
+        "throttle": 65,
+        "thrust_g": 7600,
+        "current_a": 23.5,
+        "power_w": 1128.0,
+        "eff_gw": 6.74
+      },
+      {
+        "throttle": 80,
+        "thrust_g": 11200,
+        "current_a": 41.0,
+        "power_w": 1968.0,
+        "eff_gw": 5.69
+      },
+      {
+        "throttle": 100,
+        "thrust_g": 15300,
+        "current_a": 68.5,
+        "power_w": 3288.0,
+        "eff_gw": 4.65
+      }
+    ]
+  },
+  "Hobbywing XRotor X9 (34x11 프롭 / 14S 52V)": {
+    "kv": 110,
+    "max_thrust_kg": 22.5,
+    "voltage_v": 52.0,
+    "curve": [
+      {
+        "throttle": 45,
+        "thrust_g": 7200,
+        "current_a": 17.5,
+        "power_w": 910.0,
+        "eff_gw": 7.91
+      },
+      {
+        "throttle": 55,
+        "thrust_g": 9500,
+        "current_a": 25.8,
+        "power_w": 1341.6,
+        "eff_gw": 7.08
+      },
+      {
+        "throttle": 75,
+        "thrust_g": 15200,
+        "current_a": 52.0,
+        "power_w": 2704.0,
+        "eff_gw": 5.62
+      },
+      {
+        "throttle": 100,
+        "thrust_g": 22500,
+        "current_a": 92.0,
+        "power_w": 4784.0,
+        "eff_gw": 4.7
+      }
+    ]
+  },
+  "T-Motor P80 III (G30x10.5 프롭 / 12S 48V)": {
+    "kv": 100,
+    "max_thrust_kg": 17.2,
+    "voltage_v": 48.0,
+    "curve": [
+      {
+        "throttle": 50,
+        "thrust_g": 4800,
+        "current_a": 12.8,
+        "power_w": 614.4,
+        "eff_gw": 7.81
+      },
+      {
+        "throttle": 65,
+        "thrust_g": 7500,
+        "current_a": 24.2,
+        "power_w": 1161.6,
+        "eff_gw": 6.46
+      },
+      {
+        "throttle": 85,
+        "thrust_g": 12300,
+        "current_a": 48.5,
+        "power_w": 2328.0,
+        "eff_gw": 5.28
+      },
+      {
+        "throttle": 100,
+        "thrust_g": 16500,
+        "current_a": 72.0,
+        "power_w": 3456.0,
+        "eff_gw": 4.77
+      }
+    ]
+  }
+}
