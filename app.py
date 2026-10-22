@@ -453,7 +453,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
             seen_f.add(fp)
 
     if route == "compare":
-        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content'][:400]}" for d in manual_docs]
+        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content'][:300][:400]}" for d in manual_docs]
         m_txt = "\n".join(m_lines) if m_lines else "로컬 매뉴얼 자료 없음"
 
         w_lines = [f"[{i}] {w['title']}: {w['snippet']}" for i, w in enumerate(web_docs, start=1)]
@@ -525,7 +525,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
 
     context = []
     if locals().get('manual_docs'):
-        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content'][:400]}" for d in manual_docs]
+        m_lines = [f"[{d['category']} | {d['source_file']} p.{d['page']}] {d['content'][:300][:400]}" for d in manual_docs]
         context.append("[로컬 기술 매뉴얼]\n" + "\n".join(m_lines))
     if locals().get('web_docs'):
         w_lines = [f"[{i}] {w['title']}: {w['snippet']}" for i, w in enumerate(web_docs, start=1)]
@@ -554,7 +554,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
         if locals().get('manual_docs'):
             summary_prompt = """아래 매뉴얼 발췌본들을 바탕으로, 각 파일과 페이지에 적힌 핵심 사양을 '1줄의 한국어 요약문'으로 번역/정제하세요.
 [발췌본]
-""" + "\n".join([f"- `{d['category']}/{d['source_file']}` (p.{d['page']}): {d['content'][:150].replace(chr(10), ' ')}" for d in manual_docs]) + """
+""" + "\n".join([f"- `{d['category']}/{d['source_file']}` (p.{d['page']}): {d['content'][:300][:150].replace(chr(10), ' ')}" for d in manual_docs]) + """
 [출력 양식] 각 항목별로 아래 형식만 줄바꿈하여 출력하세요:
 • `경로/파일명.pdf` (p.X) — [한국어로 번역 정제된 1줄 요약]
 """
@@ -564,7 +564,7 @@ def answer_node(state: DroneQAState) -> DroneQAState:
                 for d in manual_docs:
                     k = (f"{d['category']}/{d['source_file']}", d.get('page', 1))
                     if k not in doc_page_map:
-                        doc_page_map[k] = d['content'].replace('\n', ' ').replace('~', '-').strip()[:70]
+                        doc_page_map[k] = d['content'][:300].replace('\n', ' ').replace('~', '-').strip()[:70]
             summary_items = [f"- `{doc}` (p.{pg}) — {snip.replace('~', '-')}..." for (doc, pg), snip in doc_page_map.items()]
             footer.append("📌 **참조 매뉴얼 및 페이지별 내용 요약:**\n\n" + "\n\n".join(summary_items))
 
